@@ -8,6 +8,12 @@ List of available endpoints:
 - `GET /users/:id`
 - `POST /users`
 - `PUT /users/:id`
+- `POST /attendances`
+- `POST /permits`
+- `GET /permits`
+- `DELETE /permits`
+- `GET /logs`
+- `GET /logs/:id`
 
 ## Global Error
 
