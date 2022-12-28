@@ -22,6 +22,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "npx nodemon ./bin/www",
+    "reset-db": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all",
     "db:dev": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate",
     "db:test": "npx sequelize --env=test db:drop && npx sequelize --env=test db:create && npx sequelize --env=test db:migrate && npx sequelize --env=test db:seed:all",
     "test": "jest --forceExit --runInBand"
