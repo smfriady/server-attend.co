@@ -5,15 +5,14 @@ const errorHandler = (err, req, res, next) => {
   if (
     err.name === "SequelizeUniqueConstraintError" ||
     err.name === "SequelizeValidationError" ||
-    err.name === "SequelizeDatabaseError" ||
-    err.name === "Bed request"
+    err.name === "SequelizeDatabaseError"
   ) {
     err.errors?.forEach((m) => (message = m.message));
     code = 400;
-  } else if (err.name === "Invalid credentials") {
+  } else if (err.name === "INVALID_CREDENTIALS") {
     message = "Email or password invalid";
     code = 400;
-  } else if (err.name === "Not found") {
+  } else if (err.name === "NOT_FOUND") {
     message = "Data not found";
     code = 404;
   } else {

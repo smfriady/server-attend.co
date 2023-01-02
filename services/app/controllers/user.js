@@ -49,17 +49,17 @@ const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      throw { name: "Bed request" };
+      throw { name: "INVALID_CREDENTIALS" };
     }
 
     const foundUser = await User.findOne({ where: { email } });
     if (!foundUser) {
-      throw { name: "Invalid credentials" };
+      throw { name: "INVALID_CREDENTIALS" };
     }
 
     const comparehash = comparePassword(password, foundUser.password);
     if (!comparehash) {
-      throw { name: "Invalid credentials" };
+      throw { name: "INVALID_CREDENTIALS" };
     }
 
     const payload = { id: foundUser.id };
@@ -77,7 +77,7 @@ const deleteUser = async (req, res, next) => {
 
     const foundUser = await User.findByPk(id);
     if (!foundUser) {
-      throw { name: "Not found" };
+      throw { name: "NOT_FOUND" };
     }
 
     await User.destroy({ where: { id } });

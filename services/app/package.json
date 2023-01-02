@@ -7,7 +7,8 @@
     "jsonwebtoken": "^9.0.0",
     "morgan": "^1.10.0",
     "pg": "^8.8.0",
-    "sequelize": "^6.28.0"
+    "sequelize": "^6.28.0",
+    "uuid": "^9.0.0"
   },
   "name": "app",
   "version": "1.0.0",
@@ -20,8 +21,8 @@
     "supertest": "^6.3.3"
   },
   "scripts": {
-    "start": "node ./bin/www",
-    "dev": "npx nodemon ./bin/www",
+    "start": "node app.js",
+    "dev": "npx nodemon app.js",
     "reset-db": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all",
     "db:dev": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate",
     "db:test": "npx sequelize --env=test db:drop && npx sequelize --env=test db:create && npx sequelize --env=test db:migrate && npx sequelize --env=test db:seed:all",
