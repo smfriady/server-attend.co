@@ -10,10 +10,10 @@ const errorHandler = (err, req, res, next) => {
     err.errors?.forEach((m) => (message = m.message));
     code = 400;
   } else if (err.name === "INVALID_CREDENTIALS") {
-    message = "Email or password invalid";
-    code = 400;
+    message = "email or password invalid";
+    code = 401;
   } else if (err.name === "NOT_FOUND") {
-    message = "Data not found";
+    message = "data not found";
     code = 404;
   } else {
     message = "internal server error";
