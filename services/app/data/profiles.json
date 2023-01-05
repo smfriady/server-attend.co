@@ -1,0 +1,42 @@
+[
+  {
+    "first_name": "Constantino",
+    "last_name": "Bowhay",
+    "nik": "5144172784",
+    "birth_date": "11/1/1998",
+    "education": "Electrical Engineering",
+    "img_profile": "http://dummyimage.com/217x100.png/cc0000/ffffff"
+  },
+  {
+    "first_name": "Charmaine",
+    "last_name": "Rope",
+    "nik": "5494407810",
+    "birth_date": "4/5/1994",
+    "education": "Civil Engineering",
+    "img_profile": "http://dummyimage.com/179x100.png/5fa2dd/ffffff"
+  },
+  {
+    "first_name": "Guss",
+    "last_name": "Hubbucke",
+    "nik": "9228562528",
+    "birth_date": "3/11/1991",
+    "education": "Civil Engineering",
+    "img_profile": "http://dummyimage.com/219x100.png/cc0000/ffffff"
+  },
+  {
+    "first_name": "Joye",
+    "last_name": "Lukas",
+    "nik": "8041566367",
+    "birth_date": "8/12/1999",
+    "education": "Electrical Engineering",
+    "img_profile": "http://dummyimage.com/195x100.png/5fa2dd/ffffff"
+  },
+  {
+    "first_name": "Vivianne",
+    "last_name": "Vigar",
+    "nik": "3671459867",
+    "birth_date": "2/1/1998",
+    "education": "Psychology",
+    "img_profile": "http://dummyimage.com/196x100.png/ff4444/ffffff"
+  }
+]

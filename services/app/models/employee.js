@@ -1,8 +1,9 @@
 "use strict";
 const { Model } = require("sequelize");
 const { hashPassword } = require("../middlewares/bcrypt");
+
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class Employee extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -12,39 +13,37 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  User.init(
+  Employee.init(
     {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: { msg: "email address already registered" },
         validate: {
-          notEmpty: { msg: "Email is required" },
-          notNull: { msg: "Email is required" },
-          isEmail: true,
+          notEmpty: { msg: "email is required" },
+          notNull: { msg: "email is required" },
+          isEmail: { msg: "invalid format email address" },
         },
       },
       password: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notEmpty: { msg: "Email is required" },
-          notNull: { msg: "Email is required" },
-          len: {
-            args: [6, 10],
-            msg: "The password length should be between 6 and 10 characters",
-          },
+          notEmpty: { msg: "password is required" },
+          notNull: { msg: "password is required" },
+          len: { args: [6], msg: "password minimum 6 chars" },
         },
       },
     },
     {
       hooks: {
-        beforeCreate: (instace, option) => {
-          instace.password = hashPassword(instace.password);
+        beforeValidate: (instance, _) => {
+          instance.password = hashPassword(instance.password);
         },
       },
       sequelize,
-      modelName: "User",
+      modelName: "Employee",
     }
   );
-  return User;
+  return Employee;
 };
