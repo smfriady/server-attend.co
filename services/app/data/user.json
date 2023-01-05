@@ -1,10 +1,32 @@
 [
   {
-    "email": "user1@gmail.com",
-    "password": "123456"
+    "email": "kballingal0@intel.com",
+    "password": "Y3URkpq04",
+    "role_id": 2,
+    "profile_id": 2
   },
   {
-    "email": "user2@gmail.com",
-    "password": "123456"
+    "email": "shavoc1@angelfire.com",
+    "password": "FBwDnl7Edpz",
+    "role_id": 3,
+    "profile_id": 5
+  },
+  {
+    "email": "jferrey2@posterous.com",
+    "password": "S2oTi8dNyWv",
+    "role_id": 5,
+    "profile_id": 4
+  },
+  {
+    "email": "dberisford3@springer.com",
+    "password": "1EoCPtgcen4",
+    "role_id": 1,
+    "profile_id": 3
+  },
+  {
+    "email": "ktreasaden4@weebly.com",
+    "password": "6xlRxF",
+    "role_id": 4,
+    "profile_id": 1
   }
 ]
