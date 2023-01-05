@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       hooks: {
-        beforeCreate: (instance, _) => {
+        beforeValidate: (instance, _) => {
           instance.password = hashPassword(instance.password);
         },
       },
