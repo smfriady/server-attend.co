@@ -40,8 +40,7 @@ _201 - Created_
 - Body
   ```json
   {
-    "id": INTEGER,
-    "email": STRING
+    "message": "employee with email ${employee.email} created successfully"
   }
   ```
 
@@ -234,7 +233,7 @@ _200 - OK_
 - Body
   ```json
   {
-    "message": "employees success to delete"
+    "message": "employee with email ${employee.email} deleted successfully"
   }
   ```
   _404 - Not Found_
@@ -242,7 +241,7 @@ _200 - OK_
 
   ```json
   {
-    "message": "data Not found"
+    "message": "data not found"
   }
   ```
 
@@ -257,7 +256,7 @@ _200 - OK_
 - Body
   ```json
   {
-    "name": String,
+    "message": "Role with name ${role.name} created successfully"
   }
   ```
 
@@ -341,7 +340,7 @@ _201 - Created_
 - Body
   ```json
   {
-    "message": "roles has been updated"
+    "message": "Role with name ${payload.name} updated successfully"
   }
   ```
 
@@ -377,7 +376,7 @@ _200 - OK_
 - Body
   ```json
   {
-    "message": "role success to delete"
+    "message": "Role with name ${role.name} deleted successfully"
   }
   ```
   _404 - Not Found_
@@ -385,7 +384,7 @@ _200 - OK_
 
   ```json
   {
-    "message": "data Not found"
+    "message": "data not found"
   }
   ```
 
