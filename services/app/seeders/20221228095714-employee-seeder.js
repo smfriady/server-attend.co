@@ -12,10 +12,10 @@ module.exports = {
       user.password = hashPassword(user.password);
       return user;
     });
-    await queryInterface.bulkInsert("Users", users, {});
+    await queryInterface.bulkInsert("Employees", users, {});
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("Users", null, {});
+    await queryInterface.bulkDelete("Employees", null, {});
   },
 };
