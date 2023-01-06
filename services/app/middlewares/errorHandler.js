@@ -2,24 +2,24 @@ const errorHandler = (err, req, res, next) => {
   let code;
   let message;
 
-  if (
-    err.name === "SequelizeUniqueConstraintError" ||
-    err.name === "SequelizeValidationError" ||
-    err.name === "SequelizeDatabaseError"
-  ) {
-    err.errors?.forEach((m) => (message = m.message));
+  if (err.name === "SequelizeUniqueConstraintError") {
+    err.errors.forEach((m) => (message = m.message));
     code = 400;
-  } else if (err.name === "INVALID_CREDENTIALS") {
-    message = "email or password invalid";
+  } else if (err.name === "SequelizeValidationError") {
+    err.errors.forEach((m) => (message = m.message));
+    code = 400;
+  } else if (err.name === "SequelizeDatabaseError") {
+    err.errors.forEach((m) => (message = m.message));
+    code = 400;
+  } else if (err.name === "UNAUTHORIZED") {
+    message = "not authorized, no user login";
     code = 401;
-  } else if (err.name === "NOT_FOUND") {
-    message = "data not found";
-    code = 404;
   } else {
     message = "internal server error";
     code = 500;
   }
+
   res.status(code).json({ code, message });
 };
 
-module.exports = errorHandler;
+module.exports = { errorHandler };

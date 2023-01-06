@@ -1,27 +1,26 @@
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
-
 const express = require("express");
-const errorHandler = require("./middlewares/errorHandler");
 const cors = require("cors");
 const morgan = require("morgan");
-const app = express();
+
+const routes = require("./routes");
 
 const PORT = process.env.PORT || 4001;
 
-const indexRouter = require("./routes");
+const app = express();
 
-if (process.env.NODE_ENV === "development") {
+const { errorHandler } = require("./middlewares/errorHandler");
+
+if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
 }
-
 app.use(cors());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false, limit: "5mb" }));
 app.use(express.json());
 
-// routes
-app.use(indexRouter);
+app.use(routes);
 app.use(errorHandler);
 
 app.listen(PORT, (_) => console.log(`Serverup at port ${PORT}`));
