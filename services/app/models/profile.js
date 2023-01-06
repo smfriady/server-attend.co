@@ -9,9 +9,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // Profile.belongsTo(models.Employee, {
-      //   foreignKey: "profile_id",
-      // });
+      Profile.hasOne(models.Employee, {
+        foreignKey: "employee_id",
+      });
+      Profile.hasOne(models.Role, {
+        foreignKey: "role_id",
+      });
+      Profile.hasOne(models.Department, {
+        foreignKey: "department_id",
+      });
     }
   }
   Profile.init(
@@ -44,6 +50,34 @@ module.exports = (sequelize, DataTypes) => {
       birth_date: DataTypes.STRING,
       education: DataTypes.STRING,
       img_profile: DataTypes.STRING,
+
+      role_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Role",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      },
+      employee_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Employee",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      },
+      department_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Department",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      },
     },
     {
       sequelize,
