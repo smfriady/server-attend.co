@@ -3,10 +3,10 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.addColumn("Profiles", "role_id", {
+    await queryInterface.addColumn("Profiles", "employee_id", {
       type: Sequelize.INTEGER,
       references: {
-        model: "Roles",
+        model: "Employees",
         key: "id",
       },
       onDelete: "CASCADE",
@@ -15,6 +15,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeColumn("Profiles", "role_id");
+    await queryInterface.removeColumn("Profiles", "employee_id");
   },
 };
