@@ -1,5 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
+const { hashPassword } = require("../middlewares/bycrypt");
+
 module.exports = (sequelize, DataTypes) => {
   class Employee extends Model {
     /**
@@ -9,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Employee.belongsTo(models.Department, { foreignKey: "department_id" });
+      Employee.belongsTo(models.Role, { foreignKey: "role_id" });
     }
   }
   Employee.init(
@@ -80,10 +84,27 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       base_salary: DataTypes.INTEGER,
-      department_id: DataTypes.INTEGER,
-      role_id: DataTypes.INTEGER,
+      department_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Departments",
+          key: "id",
+        },
+      },
+      role_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Roles",
+          key: "id",
+        },
+      },
     },
     {
+      hooks: {
+        beforeValidate: (instance, _) => {
+          instance.password = hashPassword(instance.password);
+        },
+      },
       sequelize,
       modelName: "Employee",
     }
