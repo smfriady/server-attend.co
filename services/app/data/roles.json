@@ -1,7 +1,17 @@
 [
-  { "name": "Electrician" },
-  { "name": "Construction Worker" },
-  { "name": "Subcontractor" },
-  { "name": "Surveyor" },
-  { "name": "Construction Manager" }
+  {
+    "name": "Electrician"
+  },
+  {
+    "name": "Construction Worker"
+  },
+  {
+    "name": "Subcontractor"
+  },
+  {
+    "name": "Surveyor"
+  },
+  {
+    "name": "Construction Manager"
+  }
 ]

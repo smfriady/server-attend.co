@@ -5,7 +5,9 @@
     "nik": "5144172784",
     "birth_date": "11/1/1998",
     "education": "Electrical Engineering",
-    "img_profile": "http://dummyimage.com/217x100.png/cc0000/ffffff"
+    "img_profile": "http://dummyimage.com/217x100.png/cc0000/ffffff",
+    "employee_id": 2,
+    "role_id": 2
   },
   {
     "first_name": "Charmaine",
@@ -13,7 +15,9 @@
     "nik": "5494407810",
     "birth_date": "4/5/1994",
     "education": "Civil Engineering",
-    "img_profile": "http://dummyimage.com/179x100.png/5fa2dd/ffffff"
+    "img_profile": "http://dummyimage.com/179x100.png/5fa2dd/ffffff",
+    "employee_id": 5,
+    "role_id": 3
   },
   {
     "first_name": "Guss",
@@ -21,7 +25,9 @@
     "nik": "9228562528",
     "birth_date": "3/11/1991",
     "education": "Civil Engineering",
-    "img_profile": "http://dummyimage.com/219x100.png/cc0000/ffffff"
+    "img_profile": "http://dummyimage.com/219x100.png/cc0000/ffffff",
+    "employee_id": 4,
+    "role_id": 5
   },
   {
     "first_name": "Joye",
@@ -29,7 +35,9 @@
     "nik": "8041566367",
     "birth_date": "8/12/1999",
     "education": "Electrical Engineering",
-    "img_profile": "http://dummyimage.com/195x100.png/5fa2dd/ffffff"
+    "img_profile": "http://dummyimage.com/195x100.png/5fa2dd/ffffff",
+    "employee_id": 3,
+    "role_id": 1
   },
   {
     "first_name": "Vivianne",
@@ -37,6 +45,8 @@
     "nik": "3671459867",
     "birth_date": "2/1/1998",
     "education": "Psychology",
-    "img_profile": "http://dummyimage.com/196x100.png/ff4444/ffffff"
+    "img_profile": "http://dummyimage.com/196x100.png/ff4444/ffffff",
+    "employee_id": 1,
+    "role_id": 4
   }
 ]
