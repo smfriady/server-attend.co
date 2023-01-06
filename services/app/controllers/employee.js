@@ -1,17 +1,25 @@
-const { Employee } = require("../models/index");
+const { Employee, Profile } = require("../models/index");
 
 const getEmployees = async (_req, res, next) => {
   try {
-    const options = {
-      attributes: {
-        exclude: ["password", "createdAt", "updatedAt"],
-      },
-    };
+    // const options = {
+    //   attributes: {
+    //     exclude: ["password", "createdAt", "updatedAt"],
+    //   },
+    //   include: {
+    //     model: Profile,
+    //   },
+    // };
 
-    const employees = await Employee.findAll(options);
+    const employees = await Profile.findAll({
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
+      },
+    });
 
     res.status(200).json(employees);
   } catch (err) {
+    console.log(err);
     next(err);
   }
 };

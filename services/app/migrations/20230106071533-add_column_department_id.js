@@ -6,7 +6,7 @@ module.exports = {
     await queryInterface.addColumn("Profiles", "department_id", {
       type: Sequelize.INTEGER,
       references: {
-        model: "Departments",
+        model: "Department",
         key: "id",
       },
       onDelete: "CASCADE",
