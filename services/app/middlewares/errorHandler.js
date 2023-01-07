@@ -2,15 +2,13 @@ const errorHandler = (err, req, res, next) => {
   let code;
   let message;
 
-  console.log(err.name, "<<<<<<<<<<<<<<<<<<<");
+  console.log(err.name, "<<<<<<<<<<<JanganLupaComentariKloProduction<<<<<<<<");
 
-  if (err.name === "SequelizeUniqueConstraintError") {
-    err.errors.forEach((m) => (message = m.message));
-    code = 400;
-  } else if (err.name === "SequelizeValidationError") {
-    err.errors.forEach((m) => (message = m.message));
-    code = 400;
-  } else if (err.name === "SequelizeDatabaseError") {
+  if (
+    err.name === "SequelizeUniqueConstraintError" ||
+    err.name === "SequelizeValidationError" ||
+    err.name === "SequelizeDatabaseError"
+  ) {
     err.errors.forEach((m) => (message = m.message));
     code = 400;
   } else if (err.name === "ValidationErrorItem") {
@@ -25,6 +23,9 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "BAD_REQUEST_ATTACHMENT") {
     message = "attachment is required";
     code = 400;
+  } else if (err.name === "NO_DATA_FOUND") {
+    message = "no data found";
+    code = 404;
   } else if (err.message.includes("too large")) {
     message = err.message;
     code = err.http_code;
