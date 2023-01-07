@@ -25,19 +25,33 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      longitude: {
+      latitude: {
         type: DataTypes.FLOAT,
         allowNull: false,
         validate: {
           notNull: {
-            msg: "longitude is required",
+            msg: "latitude is required",
           },
           notEmpty: {
-            msg: "longitude is required",
+            msg: "latitude is required",
           },
         },
       },
-      type: DataTypes.ENUM,
+      type: {
+        type: DataTypes.ENUM,
+        allowNull: false,
+        values: ["in", "out"],
+        defaultValue: "in",
+        validate: {
+          notNull: { msg: "location type is required" },
+          notEmpty: { msg: "location type is required" },
+          isEven(values) {
+            if (values !== "in" || values !== "out") {
+              throw new Error("wrong type location");
+            }
+          },
+        },
+      },
       attendance_id: {
         type: DataTypes.INTEGER,
         references: {

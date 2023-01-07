@@ -15,7 +15,22 @@ module.exports = (sequelize, DataTypes) => {
     {
       check_in_time: DataTypes.DATE,
       check_out_time: DataTypes.DATE,
-      attendance_type: DataTypes.ENUM,
+      attendance_type: {
+        type: DataTypes.ENUM,
+        allowNull: false,
+        values: ["absent", "attendance", "sick", "paid leave", "permit"],
+        defaultValue: "absent",
+        validate: {
+          notNull: { msg: "attendance type is required" },
+          notEmpty: { msg: "attendance type is required" },
+          isEven(values) {
+            // nanti ditambahkan lagi untuk type yang lain
+            if (values !== "absent") {
+              throw new Error("wrong choose attendance type");
+            }
+          },
+        },
+      },
       attachment: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -31,12 +46,17 @@ module.exports = (sequelize, DataTypes) => {
           model: "Employees",
           key: "id",
         },
-        onUpdate: "cascade",
-        onDelete: "cascade",
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       profile_id: DataTypes.INTEGER,
     },
     {
+      hooks: {
+        beforeValidate: (value, _opt) => {
+          value.attendance_type = "absent";
+        },
+      },
       sequelize,
       modelName: "Attendance",
     }

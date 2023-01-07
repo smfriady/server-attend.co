@@ -17,6 +17,9 @@ module.exports = {
       },
       attendance_type: {
         type: Sequelize.ENUM,
+        values: ["absent", "attendance", "sick", "paid leave", "permit"],
+        allowNull: false,
+        defaultValue: "absent",
       },
       attachment: {
         type: Sequelize.STRING,
