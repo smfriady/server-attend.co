@@ -19,9 +19,15 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "BAD_REQUEST_ATTENDANCE_TYPE") {
     message = "wrong attendance type";
     code = 400;
+  } else if (err.name === "BAD_REQUEST_IMG_PROFILE") {
+    message = "image profile is required";
+    code = 400;
   } else if (err.name === "BAD_REQUEST_ATTACHMENT") {
     message = "attachment is required";
     code = 400;
+  } else if (err.message.includes("too large")) {
+    message = err.message;
+    code = err.http_code;
   } else if (err.name === "UNAUTHORIZED") {
     message = "not authorized, no user login";
     code = 401;

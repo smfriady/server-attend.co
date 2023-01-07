@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { multerUploads } = require("../middlewares/multer");
 
 const {
   getEmployees,
@@ -9,7 +10,7 @@ const {
 } = require("../controllers/employee");
 
 router.get("/", getEmployees);
-router.post("/", createEmployee);
+router.post("/", multerUploads.single("img_profile"), createEmployee);
 router.get("/:id", getEmployee);
 router.put("/:id", editEmployee);
 router.delete("/:id", deleteEmployee);
