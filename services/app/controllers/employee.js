@@ -2,27 +2,56 @@ const { Employee, Department, Role } = require("../models/index");
 
 const getEmployees = async (_req, res, next) => {
   try {
-    const employees = await Employee.findAll({
-      attributes: { exclude: ["password", "createdAt", "updatedAt"] },
-      include: [Department, Role],
-    });
+    const option = {
+      attributes: {
+        exclude: [
+          "password",
+          "createdAt",
+          "updatedAt",
+          "department_id",
+          "role_id",
+        ],
+      },
+      include: [
+        {
+          model: Department,
+          attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+        },
+        {
+          model: Role,
+          attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+        },
+      ],
+      order: [["id", "ASC"]],
+    };
 
-    res.status(200).json({ employees });
+    const employees = await Employee.findAndCountAll(option);
+
+    res.status(200).json({ total: employees.count, employees: employees.rows });
   } catch (err) {
-    // next(err);
-    console.log(err);
+    next(err);
   }
 };
 
 const getEmployee = async (req, res, next) => {
   try {
     const { id } = req.params;
-
-    const employee = await Employee.findOne({
+    const option = {
       attributes: { exclude: ["password", "createdAt", "updatedAt"] },
-      include: [Department, Role],
+      include: [
+        {
+          model: Department,
+          attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+        },
+        {
+          model: Role,
+          attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+        },
+      ],
       where: { id },
-    });
+    };
+
+    const employee = await Employee.findOne(option);
 
     res.json({ employee });
   } catch (err) {
@@ -99,7 +128,6 @@ const editEmployee = async (req, res, next) => {
     res.json({ message: "Updated successfully" });
   } catch (err) {
     next(err);
-    console.log(err);
   }
 };
 
