@@ -9,6 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Attendance.belongsTo(models.Employee, { foreignKey: "employee_id" });
+      Attendance.hasOne(models.Location, { foreignKey: "attendance_id" });
     }
   }
   Attendance.init(
@@ -25,7 +27,12 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "attendance type is required" },
           isEven(values) {
             // nanti ditambahkan lagi untuk type yang lain
-            if (values !== "absent") {
+            if (
+              values !== "absent" ||
+              values !== "attendance" ||
+              values !== "sick" ||
+              values !== "permit"
+            ) {
               throw new Error("wrong choose attendance type");
             }
           },
@@ -33,15 +40,9 @@ module.exports = (sequelize, DataTypes) => {
       },
       attachment: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: "attachment is required",
-          },
-          notEmpty: {
-            msg: "attachment is required",
-          },
-        },
+      },
+      employee_id: {
+        type: DataTypes.INTEGER,
         references: {
           model: "Employees",
           key: "id",
@@ -49,11 +50,10 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      profile_id: DataTypes.INTEGER,
     },
     {
       hooks: {
-        beforeValidate: (value, _opt) => {
+        beforeCreate: (value, _opt) => {
           value.attendance_type = "absent";
         },
       },

@@ -23,7 +23,6 @@ module.exports = {
       },
       attachment: {
         type: Sequelize.STRING,
-        allowNull: false,
       },
       employee_id: {
         type: Sequelize.INTEGER,

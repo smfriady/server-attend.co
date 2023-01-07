@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Location.belongsTo(models.Attendance, { foreignKey: "attendance_id" });
     }
   }
   Location.init(
@@ -25,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      latitude: {
+      longitude: {
         type: DataTypes.FLOAT,
         allowNull: false,
         validate: {
@@ -46,8 +47,10 @@ module.exports = (sequelize, DataTypes) => {
           notNull: { msg: "location type is required" },
           notEmpty: { msg: "location type is required" },
           isEven(values) {
-            if (values !== "in" || values !== "out") {
-              throw new Error("wrong type location");
+            if (values !== "in") {
+              if (values !== "out") {
+                throw new Error("wrong type location");
+              }
             }
           },
         },
@@ -63,9 +66,15 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
+      hooks: {
+        beforeValidate: (instance, _) => {
+          instance.type = "in";
+        },
+      },
       sequelize,
       modelName: "Location",
     }
   );
+
   return Location;
 };
