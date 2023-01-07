@@ -1,4 +1,6 @@
 const { Employee, Department, Role } = require("../models/index");
+const DatauriParser = require("datauri/parser");
+const cloudinary = require("../middlewares/cloudinary");
 const { Op } = require("sequelize");
 
 const getEmployees = async (req, res, next) => {
@@ -9,7 +11,13 @@ const getEmployees = async (req, res, next) => {
 
     const option = {
       attributes: {
-        exclude: ["password", "createdAt", "updatedAt", "department_id", "role_id"],
+        exclude: [
+          "password",
+          "createdAt",
+          "updatedAt",
+          "department_id",
+          "role_id",
+        ],
       },
       limit,
       include: [
@@ -57,7 +65,9 @@ const getEmployees = async (req, res, next) => {
 
     const employees = await Employee.findAndCountAll(option);
 
-    res.status(200).json({ total: employees.count, employees: employees.rows, page: +page });
+    res
+      .status(200)
+      .json({ total: employees.count, employees: employees.rows, page: +page });
   } catch (err) {
     next(err);
   }
@@ -91,12 +101,12 @@ const getEmployee = async (req, res, next) => {
 
 const createEmployee = async (req, res, next) => {
   try {
+    if (!req.file) throw { name: "BAD_REQUEST_IMG_PROFILE" };
     const {
       first_name,
       last_name,
       nik,
       education,
-      img_profile,
       birth_date,
       email,
       password,
@@ -105,24 +115,32 @@ const createEmployee = async (req, res, next) => {
       role_id,
     } = req.body;
 
-    const employee = await Employee.create({
+    const parser = new DatauriParser();
+    const pathImage = parser.format(req.file.originalname, req.file.buffer);
+    const image = await cloudinary.uploader.upload(pathImage.content);
+    const imgProfile = image.secure_url;
+
+    const payload = {
       first_name,
       last_name,
       nik,
       education,
-      img_profile,
       birth_date,
       email,
       password,
       base_salary,
       department_id,
       role_id,
-    });
+      img_profile: imgProfile,
+    };
+
+    const employee = await Employee.create(payload);
 
     res.status(201).json({
       message: `Employee with email ${employee.email} created successfully`,
     });
   } catch (err) {
+    console.log(err);
     next(err);
   }
 };
