@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const { multerUploads } = require("../middlewares/multer");
 
+const { multerUploads } = require("../middlewares/multer");
 const {
   getEmployees,
   getEmployee,
@@ -12,7 +12,7 @@ const {
 router.get("/", getEmployees);
 router.post("/", multerUploads.single("img_profile"), createEmployee);
 router.get("/:id", getEmployee);
-router.put("/:id", editEmployee);
+router.put("/:id", multerUploads.single("img_profile"), editEmployee);
 router.delete("/:id", deleteEmployee);
 
 module.exports = router;
