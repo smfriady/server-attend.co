@@ -9,7 +9,7 @@ const getRoles = async (_req, res, next) => {
     };
     const roles = await Role.findAll(option);
 
-    res.json({ roles });
+    res.json(roles);
   } catch (err) {
     next(err);
   }

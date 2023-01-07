@@ -5,9 +5,9 @@ const getDepartments = async (req, res, next) => {
     const option = {
       attributes: { exclude: ["createdAt", "updatedAt"] },
     };
-    const departmens = await Department.findAll(option);
+    const department = await Department.findAll(option);
 
-    res.json({ departmens });
+    res.json(department);
   } catch (err) {
     next(err);
   }
