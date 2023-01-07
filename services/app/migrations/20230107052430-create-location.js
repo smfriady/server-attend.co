@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      longitute: {
+      latitude: {
         type: Sequelize.FLOAT,
         allowNull: false,
       },
@@ -19,6 +19,9 @@ module.exports = {
       },
       type: {
         type: Sequelize.ENUM,
+        values: ["in", "out"],
+        allowNull: false,
+        defaultValue: "in",
       },
       attendance_id: {
         type: Sequelize.INTEGER,
