@@ -1,7 +1,12 @@
 const { Employee, Department, Role } = require("../models/index");
+const { Op } = require("sequelize");
 
-const getEmployees = async (_req, res, next) => {
+const getEmployees = async (req, res, next) => {
   try {
+    const { page = "", firstName = "", filter = "" } = req.query;
+
+    const limit = 5;
+
     const option = {
       attributes: {
         exclude: [
@@ -12,6 +17,7 @@ const getEmployees = async (_req, res, next) => {
           "role_id",
         ],
       },
+      limit,
       include: [
         {
           model: Department,
@@ -25,9 +31,41 @@ const getEmployees = async (_req, res, next) => {
       order: [["id", "ASC"]],
     };
 
+    if (firstName !== "") {
+      if (firstName !== undefined) {
+        option.where = {
+          first_name: { [Op.iLike]: `%${firstName}%` },
+        };
+      }
+    }
+
+    if (page !== "") {
+      if (page !== undefined) {
+        option.offset = Number((page - 1) * limit);
+      }
+    }
+
+    if (filter !== "") {
+      if (filter !== "undefined") {
+        option.include = [
+          {
+            model: Department,
+            where: { id: filter },
+            attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+          },
+          {
+            model: Role,
+            attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+          },
+        ];
+      }
+    }
+
     const employees = await Employee.findAndCountAll(option);
 
-    res.status(200).json({ total: employees.count, employees: employees.rows });
+    res
+      .status(200)
+      .json({ total: employees.count, employees: employees.rows, page: +page });
   } catch (err) {
     next(err);
   }
@@ -109,6 +147,9 @@ const editEmployee = async (req, res, next) => {
       birth_date,
       email,
       password,
+      base_salary,
+      department_id,
+      role_id,
     } = req.body;
 
     await Employee.update(
@@ -121,6 +162,9 @@ const editEmployee = async (req, res, next) => {
         birth_date,
         email,
         password,
+        base_salary,
+        department_id,
+        role_id,
       },
       { where: { id } }
     );
