@@ -25,7 +25,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "npx nodemon app.js",
-    "db:dev": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
+    "db:dev": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate",
     "db:test": "npx sequelize --env=test db:drop && npx sequelize --env=test db:create && npx sequelize --env=test db:migrate && npx sequelize --env=test db:seed:all",
     "test": "jest --forceExit --runInBand"
   }
