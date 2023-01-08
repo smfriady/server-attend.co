@@ -14,7 +14,6 @@ async function authenticationEmployee(req, _res, next) {
 
     const { id } = decoded;
     const employee = await Employee.findByPk(id);
-    console.log(employee);
 
     if (employee) {
       req.employee = { id: employee.id, role: employee.role_id };
