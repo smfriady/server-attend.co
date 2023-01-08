@@ -48,7 +48,7 @@ module.exports = {
       },
       department_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: "Departments",
           key: "id",
@@ -56,7 +56,7 @@ module.exports = {
       },
       role_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: "Roles",
           key: "id",

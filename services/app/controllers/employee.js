@@ -76,24 +76,28 @@ const getEmployees = async (req, res, next) => {
 const getEmployee = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const option = {
+
+    if (isNaN(id)) throw { name: "NO_DATA_FOUND" };
+
+    let option = {
       attributes: { exclude: ["password", "createdAt", "updatedAt"] },
       include: [
         {
           model: Department,
-          attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+          attributes: { exclude: ["createdAt", "updatedAt"] },
         },
         {
           model: Role,
-          attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+          attributes: { exclude: ["createdAt", "updatedAt"] },
         },
       ],
       where: { id },
     };
 
     const employee = await Employee.findOne(option);
+    if (!employee) throw { name: "NO_DATA_FOUND" };
 
-    res.json(employee);
+    res.status(200).json(employee);
   } catch (err) {
     next(err);
   }
@@ -162,24 +166,37 @@ const editEmployee = async (req, res, next) => {
       role_id,
     } = req.body;
 
-    await Employee.update(
-      {
-        first_name,
-        last_name,
-        nik,
-        education,
-        img_profile,
-        birth_date,
-        email,
-        password,
-        base_salary,
-        department_id,
-        role_id,
-      },
-      { where: { id } }
-    );
+    if (isNaN(id)) throw { name: "NO_DATA_FOUND" };
 
-    res.json({ message: "Updated successfully" });
+    const employee = await Employee.findByPk(id);
+    if (!employee) throw { name: "NO_DATA_FOUND" };
+
+    if (!req.file) throw { name: "BAD_REQUEST_IMG_PROFILE" };
+
+    const parser = new DatauriParser();
+    const pathImage = parser.format(req.file.originalname, req.file.buffer);
+    const image = await cloudinary.uploader.upload(pathImage.content);
+    const imgProfile = image.secure_url;
+
+    const payload = {
+      first_name,
+      last_name,
+      nik,
+      education,
+      birth_date,
+      email,
+      password,
+      base_salary,
+      department_id,
+      role_id,
+      img_profile: imgProfile,
+    };
+
+    await Employee.update(payload, { where: { id: employee.id } });
+
+    res
+      .status(200)
+      .json({ message: `Employee with email ${payload.email} updated successfully` });
   } catch (err) {
     next(err);
   }
@@ -188,10 +205,16 @@ const editEmployee = async (req, res, next) => {
 const deleteEmployee = async (req, res, next) => {
   try {
     const { id } = req.params;
+    if (isNaN(id)) throw { name: "NO_DATA_FOUND" };
+
+    const employee = await Employee.findByPk(id);
+    if (!employee) throw { name: "NO_DATA_FOUND" };
 
     await Employee.destroy({ where: { id } });
 
-    res.json({ message: `Employee with id ${id} is deleted` });
+    res
+      .status(200)
+      .json({ message: `Employee with email ${employee.email} deleted successfully` });
   } catch (err) {
     next(err);
   }
