@@ -17,11 +17,11 @@ const getEmployees = async (req, res, next) => {
       include: [
         {
           model: Department,
-          attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+          attributes: { exclude: ["createdAt", "updatedAt"] },
         },
         {
           model: Role,
-          attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+          attributes: { exclude: ["createdAt", "updatedAt"] },
         },
       ],
       order: [["id", "ASC"]],
@@ -148,7 +148,6 @@ const editEmployee = async (req, res, next) => {
       last_name,
       nik,
       education,
-      img_profile,
       birth_date,
       email,
       password,
