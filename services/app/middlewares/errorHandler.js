@@ -39,11 +39,13 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "INVALID_CREDENTIAL") {
     message = "invalid email or password";
     code = 401;
-  } else if (err.message.includes("too large")) {
-    // nanti diperbaiki untuk error cloudinary
-    message = err.message;
-    code = err.http_code;
-  } else {
+  }
+  //  nanti diperbaiki untuk error cloudinary
+  //  else if (err.message.includes("too large")) {
+  //    message = err.message;
+  //    code = err.http_code;
+  //  }
+  else {
     message = "internal server error";
     code = 500;
   }

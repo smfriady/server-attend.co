@@ -2,6 +2,7 @@ const { Employee, Department, Role } = require("../models/index");
 const DatauriParser = require("datauri/parser");
 const cloudinary = require("../middlewares/cloudinary");
 const { Op } = require("sequelize");
+const e = require("express");
 
 const getEmployees = async (req, res, next) => {
   try {
@@ -154,6 +155,7 @@ const editEmployee = async (req, res, next) => {
       base_salary,
       department_id,
       role_id,
+      img_profile,
     } = req.body;
 
     if (isNaN(id)) throw { name: "NO_DATA_FOUND" };
@@ -161,32 +163,52 @@ const editEmployee = async (req, res, next) => {
     const employee = await Employee.findByPk(id);
     if (!employee) throw { name: "NO_DATA_FOUND" };
 
-    if (!req.file) throw { name: "BAD_REQUEST_IMG_PROFILE" };
+    if (req.file) {
+      const parser = new DatauriParser();
+      const pathImage = parser.format(req.file.originalname, req.file.buffer);
+      const image = await cloudinary.uploader.upload(pathImage.content);
+      const imgProfile = image.secure_url;
 
-    const parser = new DatauriParser();
-    const pathImage = parser.format(req.file.originalname, req.file.buffer);
-    const image = await cloudinary.uploader.upload(pathImage.content);
-    const imgProfile = image.secure_url;
+      const payload = {
+        first_name,
+        last_name,
+        nik,
+        education,
+        birth_date,
+        email,
+        password,
+        base_salary,
+        department_id,
+        role_id,
+        img_profile: imgProfile,
+      };
 
-    const payload = {
-      first_name,
-      last_name,
-      nik,
-      education,
-      birth_date,
-      email,
-      password,
-      base_salary,
-      department_id,
-      role_id,
-      img_profile: imgProfile,
-    };
+      await Employee.update(payload, { where: { id: employee.id } });
 
-    await Employee.update(payload, { where: { id: employee.id } });
+      res
+        .status(200)
+        .json({ message: `Employee with email ${payload.email} updated successfully` });
+    } else {
+      const payload = {
+        first_name,
+        last_name,
+        nik,
+        education,
+        birth_date,
+        email,
+        password,
+        base_salary,
+        department_id,
+        role_id,
+        img_profile,
+      };
 
-    res
-      .status(200)
-      .json({ message: `Employee with email ${payload.email} updated successfully` });
+      await Employee.update(payload, { where: { id: employee.id } });
+
+      res
+        .status(200)
+        .json({ message: `Employee with email ${payload.email} updated successfully` });
+    }
   } catch (err) {
     next(err);
   }
