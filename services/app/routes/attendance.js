@@ -1,5 +1,4 @@
 const router = require("express").Router();
-
 const { createAttendance, updateStatus } = require("../controllers/attendance");
 const { multerUploads } = require("../middlewares/multer");
 

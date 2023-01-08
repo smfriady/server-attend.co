@@ -4,7 +4,7 @@ const errorHandler = (err, req, res, next) => {
 
   console.log(err.name, "<<<<<<<<<<<JanganLupaComentariKloProduction<<<<<<<<");
   console.log(err.errors, "<<<<<<<<<<<JanganLupaComentariKloProduction<<<<<<<<");
-
+  
   if (
     err.name === "SequelizeUniqueConstraintError" ||
     err.name === "SequelizeValidationError" ||

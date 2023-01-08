@@ -11,7 +11,13 @@ const getEmployees = async (req, res, next) => {
 
     const option = {
       attributes: {
-        exclude: ["password", "createdAt", "updatedAt", "department_id", "role_id"],
+        exclude: [
+          "password",
+          "createdAt",
+          "updatedAt",
+          "department_id",
+          "role_id",
+        ],
       },
       limit,
       include: [
@@ -59,7 +65,9 @@ const getEmployees = async (req, res, next) => {
 
     const employees = await Employee.findAndCountAll(option);
 
-    res.status(200).json({ total: employees.count, employees: employees.rows, page: +page });
+    res
+      .status(200)
+      .json({ total: employees.count, employees: employees.rows, page: +page });
   } catch (err) {
     next(err);
   }
@@ -187,6 +195,7 @@ const editEmployee = async (req, res, next) => {
     res
       .status(200)
       .json({ message: `Employee with email ${payload.email} updated successfully` });
+      
   } catch (err) {
     next(err);
   }
@@ -201,10 +210,11 @@ const deleteEmployee = async (req, res, next) => {
     if (!employee) throw { name: "NO_DATA_FOUND" };
 
     await Employee.destroy({ where: { id } });
-
-    res
-      .status(200)
-      .json({ message: `Employee with email ${employee.email} deleted successfully` });
+ 
+ res
+     .status(200)
+     .json({ message: `Employee with email ${employee.email} deleted successfully` });
+      
   } catch (err) {
     next(err);
   }
