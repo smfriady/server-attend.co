@@ -31,10 +31,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notNull: {
-            msg: "latitude is required",
+            msg: "longitude is required",
           },
           notEmpty: {
-            msg: "latitude is required",
+            msg: "longitude is required",
           },
         },
       },

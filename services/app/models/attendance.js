@@ -26,23 +26,6 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "attendance type is required" },
           notEmpty: { msg: "attendance type is required" },
-          isEven(values) {
-            if (
-              values !== "absent" ||
-              values !== "attendance" ||
-              values !== "sick" ||
-              values !== "permit"
-            ) {
-              throw new Error("wrong choose attendance type");
-              // if (values !== "attendance") {
-              //   if (values !== "sick") {
-              //     if (values !== "permit") {
-              //       if (values) throw new Error("wrong choose attendance type");
-              //     }
-              //   }
-              // }
-            }
-          },
         },
       },
 
