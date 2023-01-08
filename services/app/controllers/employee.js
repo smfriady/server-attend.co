@@ -23,11 +23,11 @@ const getEmployees = async (req, res, next) => {
       include: [
         {
           model: Department,
-          attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+          attributes: { exclude: ["createdAt", "updatedAt"] },
         },
         {
           model: Role,
-          attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+          attributes: { exclude: ["createdAt", "updatedAt"] },
         },
       ],
       order: [["id", "ASC"]],
@@ -192,9 +192,10 @@ const editEmployee = async (req, res, next) => {
 
     await Employee.update(payload, { where: { id: employee.id } });
 
-    res.status(200).json({
-      message: `Employee with email ${payload.email} updated successfully`,
-    });
+    res
+      .status(200)
+      .json({ message: `Employee with email ${payload.email} updated successfully` });
+      
   } catch (err) {
     next(err);
   }
@@ -209,10 +210,11 @@ const deleteEmployee = async (req, res, next) => {
     if (!employee) throw { name: "NO_DATA_FOUND" };
 
     await Employee.destroy({ where: { id } });
-
-    res.status(200).json({
-      message: `Employee with email ${employee.email} deleted successfully`,
-    });
+ 
+ res
+     .status(200)
+     .json({ message: `Employee with email ${employee.email} deleted successfully` });
+      
   } catch (err) {
     next(err);
   }
