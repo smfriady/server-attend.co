@@ -1,0 +1,183 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 1`] = `
+{
+  "id": Any<Number>,
+  "name": "Branch Manager",
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 2`] = `
+{
+  "id": Any<Number>,
+  "name": "Marketing Supervisor",
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 3`] = `
+{
+  "id": Any<Number>,
+  "name": "Account Executive",
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 4`] = `
+{
+  "id": Any<Number>,
+  "name": "Chief Engineering",
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 5`] = `
+{
+  "id": Any<Number>,
+  "name": "Sr. Engineer",
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 6`] = `
+{
+  "id": Any<Number>,
+  "name": "Jr. Engineer",
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 7`] = `
+{
+  "id": Any<Number>,
+  "name": "CEO",
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 8`] = `
+{
+  "id": Any<Number>,
+  "name": "Marketing Head",
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 9`] = `
+{
+  "id": Any<Number>,
+  "name": "Manager",
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 10`] = `
+{
+  "id": Any<Number>,
+  "name": "HR Manager",
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 11`] = `
+{
+  "id": Any<Number>,
+  "name": "Admin Payrol",
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 12`] = `
+{
+  "id": Any<Number>,
+  "name": "Accounting",
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 13`] = `
+{
+  "id": Any<Number>,
+  "name": "Auditor",
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 14`] = `
+{
+  "id": 1,
+  "name": Any<String>,
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 15`] = `
+{
+  "id": 2,
+  "name": Any<String>,
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 16`] = `
+{
+  "id": 3,
+  "name": Any<String>,
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 17`] = `
+{
+  "id": 4,
+  "name": Any<String>,
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 18`] = `
+{
+  "id": 5,
+  "name": Any<String>,
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 19`] = `
+{
+  "id": 6,
+  "name": Any<String>,
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 20`] = `
+{
+  "id": 7,
+  "name": Any<String>,
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 21`] = `
+{
+  "id": 8,
+  "name": Any<String>,
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 22`] = `
+{
+  "id": 9,
+  "name": Any<String>,
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 23`] = `
+{
+  "id": 10,
+  "name": Any<String>,
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 24`] = `
+{
+  "id": 11,
+  "name": Any<String>,
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 25`] = `
+{
+  "id": 12,
+  "name": Any<String>,
+}
+`;
+
+exports[`GET /api/v1/web/roles GET /api/v1/web/roles - 200 - Roles - Success 26`] = `
+{
+  "id": 13,
+  "name": Any<String>,
+}
+`;
