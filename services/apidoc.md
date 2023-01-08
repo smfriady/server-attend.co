@@ -2,6 +2,10 @@
 
 ## Endpoints :
 
+List of available Auth endpoints:
+
+- `POST /api/v1/web/auth/login`
+
 List of available Employees endpoints:
 
 - `POST /api/v1/web/employees`
@@ -20,7 +24,67 @@ List of available Roles endpoints:
 
 List of available Attendances endpoints:
 
-### 1. POST /api/v1/web/employees
+- `POST /api/v1/mobile/attendances`
+- `PATCH /api/v1/mobile/attendances`
+
+### 1. POST /api/v1/web/auth/login
+
+#### Description
+
+- Process to access web app and mobile app
+
+#### Request
+
+- Body
+
+```json
+{
+  "email": String,
+  "password": String,
+}
+```
+
+#### Response
+
+_200 - OK_
+
+- Body
+
+```json
+{
+  "access_token": String,
+  "email": String,
+}
+```
+
+_400 - Bad Request_
+
+- Body
+
+```json
+{
+  "code": 400,
+  "message": "email is required"
+}
+OR
+{
+  "code": 400,
+  "message": "password is required"
+}
+```
+
+_401 - invalid_credentials_
+
+- Body
+
+```json
+{
+  "code": 401,
+  "message": "invalid email or password"
+}
+```
+
+### 2. POST /api/v1/web/employees
 
 #### Description
 
@@ -107,7 +171,7 @@ OR
 OR
 ```
 
-### 2. GET /api/v1/web/employees
+### 3. GET /api/v1/web/employees
 
 #### Description
 
@@ -155,7 +219,7 @@ _200 - OK_
 },
 ```
 
-### 3. GET /api/v1/web/employees/:id
+### 4. GET /api/v1/web/employees/:id
 
 #### Description
 
@@ -208,7 +272,7 @@ _404 - Not Found_
 }
 ```
 
-### 4. PUT /api/v1/web/employees/:id
+### 5. PUT /api/v1/web/employees/:id
 
 #### Description
 
@@ -306,7 +370,7 @@ _404 - Not Found_
 }
 ```
 
-### 5. DELETE /api/v1/web/employees/:id
+### 6. DELETE /api/v1/web/employees/:id
 
 #### Description
 
@@ -345,7 +409,7 @@ _404 - Not Found_
 }
 ```
 
-### 6. GET /api/v1/web/departments
+### 7. GET /api/v1/web/departments
 
 #### Description
 
@@ -376,7 +440,7 @@ _200 - OK_
 ]
 ```
 
-### 7. GET /api/v1/web/roles
+### 8. GET /api/v1/web/roles
 
 #### Description
 
@@ -406,6 +470,118 @@ _200 - OK_
   },
     ...
 ]
+```
+
+### 9. POST /api/v1/mobile/attendances
+
+#### Description
+
+- Create a new Attendance data for employee check in
+
+#### Request
+
+- Body
+
+```json
+{
+  "check_in_time": Date,
+  "attendance_type": String,
+  "latitude": Float,
+  "longitude": Float,
+  "attachment": String,
+}
+```
+
+_201 - Created_
+
+- Body
+
+```json
+{
+  "message": "${employee.first_name} has been check in"
+}
+```
+
+_400 - Bad Request_
+
+- Body
+
+```json
+{
+  "code": 400,
+  "message": "wrong attendance type"
+}
+OR
+{
+  "code": 400,
+  "message": "latitude is required"
+}
+OR
+{
+  "code": 400,
+  "message": "longitude is required"
+}
+OR
+{
+  "code": 400,
+  "message": "attachment is required"
+}
+```
+
+### 9. PATCH /api/v1/mobile/attendances
+
+#### Description
+
+- Update attendance data for employee check out.
+
+#### Request
+
+- Body
+
+```json
+{
+  "check_in_time": Date,
+  "attendance_type": String,
+  "latitude": Float,
+  "longitude": Float,
+  "attachment": String,
+}
+```
+
+_201 - Created_
+
+- Body
+
+```json
+{
+  "message": "${employee.first_name} has been check in"
+}
+```
+
+_400 - Bad Request_
+
+- Body
+
+```json
+{
+  "code": 400,
+  "message": "wrong attendance type"
+}
+OR
+{
+  "code": 400,
+  "message": "latitude is required"
+}
+OR
+{
+  "code": 400,
+  "message": "longitude is required"
+}
+OR
+{
+  "code": 400,
+  "message": "attachment is required"
+}
 ```
 
 ## Global Error
