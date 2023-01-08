@@ -1,23 +1,26 @@
-# API Documentation
+# API Documentation Attend.co
 
 ## Endpoints :
 
-List of available employees endpoints:
+List of available Employees endpoints:
 
-- `POST /employees`
-- `GET /employees`
-- `GET /employees/:id`
-- `PUT /employees/:id`
-- `DELETE /employees/:id`
+- `POST /api/v1/web/employees`
+- `GET /api/v1/web/employees`
+- `GET /api/v1/web/employees/:id`
+- `PUT /api/v1/web/employees/:id`
+- `DELETE /api/v1/web/employees/:id`
 
-List of available roles endpoints:
+List of available Departments endpoints:
 
-- `POST /roles`
-- `GET /roles`
-- `PUT /roles/:id`
-- `DELETE /roles/:id`
+- `GET /api/v1/web/departments`
 
-### 1. POST /employees
+List of available Roles endpoints:
+
+- `GET /api/v1/web/roles`
+
+List of available Attendances endpoints:
+
+### 1. POST /api/v1/web/employees
 
 #### Description
 
@@ -26,105 +29,147 @@ List of available roles endpoints:
 #### Request
 
 - Body
-  ```json
-  {
-    "email": String,
-    "password": String,
-    "role_id": Integer,
-    "profile_id": Integer,
-  }
-  ```
+
+```json
+{
+  "first_name": String,
+  "last_name": String,
+  "nik": Integer,
+  "education": Integer,
+  "birth_date": Date,
+  "email": String,
+  "password": String,
+  "base_Salary": Integer,
+  "department_id": Integer,
+  "role_id": Integer,
+  "img_profile": String
+}
+```
 
 _201 - Created_
 
 - Body
-  ```json
-  {
-    "message": "employee with email ${employee.email} created successfully"
-  }
-  ```
+
+```json
+{
+  "message": "Employee with email ${employee.email} created successfully"
+}
+```
 
 _400 - Bad Request_
 
 - Body
-  ```json
-    {
-      "message": "email is required"
-    }
-    OR
-    {
-      "message": "email address already registered"
-    }
-    OR
-    {
-      "message": "invalid format email address"
-    }
-    OR
-    {
-      "message": "password is required"
-    }
-    OR
-    {
-      "message": "password minimum 6 characters"
-    }
-  ```
 
-### 2. GET /employees
+```json
+{
+  "code": 400,
+  "message": "first name is required"
+}
+OR
+{
+  "code": 400,
+  "message": "last name is required"
+}
+OR
+{
+  "code": 400,
+  "message": "nik is required"
+}
+OR
+{
+  "code": 400,
+  "message": "education is required"
+}
+OR
+{
+  "code": 400,
+  "message": "image profile is required"
+}
+{
+  "code": 400,
+  "message": "birth_date is required"
+}
+OR
+{
+  "code": 400,
+  "message": "email is required"
+}
+OR
+{
+  "code": 400,
+  "message": "password is required"
+}
+OR
+{
+  "code": 400,
+  "message": "password min 6 character"
+}
+OR
+```
+
+### 2. GET /api/v1/web/employees
 
 #### Description
 
-- Get all the Employees data column id, email, password, include Roles data column name and include Profiles column firstname, lastname, nik, birth_date, education, img_profile
+- Get all the Employees data include Department data and Role data.
 
 #### Request
 
 - Headers
-  ```json
-  {
-    "access_token": string
-  }
-  ```
+
+```json
+{
+  "access_token": string
+}
+```
 
 #### Response
 
 _200 - OK_
 
 - Body
-  ```json
-  [
-    {
+
+```json
+{
+   "total": Integer,
+   "employees": [
+      {
         "id": Integer,
+        "first_name": String,
+        "last_name": String,
+        "nik": String,
+        "education": String,
+        "img_profile": String,
+        "birth_date": String,
         "email": String,
-        "password": String,
-        "Roles": {
+        "base_salary": Integer,
+        "Department": {
             "name": String
-        },
-        "Profiles": {
-            "firstname": String,
-            "lastname": String,
-            "nik": String,
-            "birth_date": Date,
-            "education": String,
-            "img_profile": String
-        }
-    },
+              },
+        "Role": {
+            "name": String
+              }
+     },
       ...
-  ]
-  ```
+    ]
+},
+```
 
-### 3. GET /employees/:id
+### 3. GET /api/v1/web/employees/:id
 
 #### Description
 
-- Get Employees data column id, email, password, include Roles data column name and include Profiles column firstname, lastname, nik, birth_date, education, img_profile based on given id
+- Get all the Employees data include Department data and Role data based on given id
 
 #### Request
 
 - Headers
-  ```json
-  {
-    "access_token": string
-  }
-  ```
+
+```json
+{
+  "access_token": string
+}
+```
 
 #### Response
 
@@ -132,86 +177,136 @@ _200 - OK_
 
 - Body
 
-  ```json
-   {
-        "id": Integer,
-        "email": String,
-        "password": String,
-        "Roles": {
-            "name": String
-        },
-        "Profiles": {
-            "firstname": String,
-            "lastname": String,
-            "nik": String,
-            "birth_date": Date,
-            "education": String,
-            "img_profile": String
-        }
-    },
-  ```
+```json
+{
+    "id": Integer,
+    "first_name": String,
+    "last_name": String,
+    "nik": String,
+    "education": String,
+    "img_profile": String,
+    "birth_date": String,
+    "email": String,
+    "base_salary": Integer,
+    "Department": {
+       "name": String
+     },
+    "Role": {
+        "name": String
+    }
+},
+```
 
-  _404 - Not Found_
+_404 - Not Found_
 
 - Body
-  ```json
-  {
-    "message": "data not found"
-  }
-  ```
 
-### 4. PUT /employees
+```json
+{
+  "code": 404,
+  "message": "no data found"
+}
+```
+
+### 4. PUT /api/v1/web/employees/:id
 
 #### Description
 
-- Update a employee data based on given
+- Update a employee data based on given id
 
 #### Request
 
 - Body
-  ```json
-  {
-    "email": String,
-    "password": String,
-    "role_id": Integer,
-  }
-  ```
+
+```json
+{
+  "first_name": String,
+  "last_name": String,
+  "nik": Integer,
+  "education": Integer,
+  "birth_date": Date,
+  "email": String,
+  "password": String,
+  "base_Salary": Integer,
+  "department_id": Integer,
+  "role_id": Integer,
+  "img_profile": String
+}
+```
 
 _201 - Created_
 
 - Body
-  ```json
-  {
-    "message": "employee with id {id} has been updated"
-  }
-  ```
+
+```json
+{
+  "message": "employee with email {employee.email} has been updated"
+}
+```
 
 _400 - Bad Request_
 
 - Body
-  ```json
-    {
-      "message": "email is required"
-    }
-    OR
-    {
-      "message": "email address already registered"
-    }
-    OR
-    {
-      "message": "invalid format email address"
-    }
-    OR
-    {
-      "message": "password is required"
-    }
-    OR
-    {
-      "message": "password minimum 6 characters"
-    }
-  ```
 
-### 5. DELETE /employees/:id
+```json
+{
+  "code": 400,
+  "message": "first name is required"
+}
+OR
+{
+  "code": 400,
+  "message": "last name is required"
+}
+OR
+{
+  "code": 400,
+  "message": "nik is required"
+}
+OR
+{
+  "code": 400,
+  "message": "education is required"
+}
+OR
+{
+  "code": 400,
+  "message": "image profile is required"
+}
+{
+  "code": 400,
+  "message": "birth_date is required"
+}
+OR
+{
+  "code": 400,
+  "message": "email is required"
+}
+OR
+{
+  "code": 400,
+  "message": "password is required"
+}
+OR
+{
+  "code": 400,
+  "message": "password min 6 character"
+}
+OR
+```
+
+_404 - Not Found_
+
+- Body
+
+```json
+{
+  "code": 404,
+  "message": "no data found"
+}
+```
+
+### 5. DELETE /api/v1/web/employees/:id
 
 #### Description
 
@@ -220,70 +315,41 @@ _400 - Bad Request_
 #### Request
 
 - Headers
-  ```json
-  {
-    "access_token": string
-  }
-  ```
+
+```json
+{
+  "access_token": string
+}
+```
 
 #### Response
 
 _200 - OK_
 
 - Body
-  ```json
-  {
-    "message": "employee with email ${employee.email} deleted successfully"
-  }
-  ```
-  _404 - Not Found_
+
+```json
+{
+  "message": "employee with email ${employee.email} deleted successfully"
+}
+```
+
+_404 - Not Found_
+
 - Body
 
-  ```json
-  {
-    "message": "data not found"
-  }
-  ```
+```json
+{
+  "code": 404,
+  "message": "no data found"
+}
+```
 
-### 6. POST /roles
+### 6. GET /api/v1/web/departments
 
 #### Description
 
-- Create a new role data
-
-#### Request
-
-- Body
-  ```json
-  {
-    "message": "Role with name ${role.name} created successfully"
-  }
-  ```
-
-_201 - Created_
-
-- Body
-  ```json
-  {
-    "id": INTEGER,
-    "name": STRING
-  }
-  ```
-
-_400 - Bad Request_
-
-- Body
-  ```json
-  {
-    "message": "role name is required"
-  }
-  ```
-
-### 7. GET /roles
-
-#### Description
-
-- Update a roles data based on given id
+- Get all the Departmens data
 
 #### Request
 
@@ -300,116 +366,64 @@ _200 - OK_
 
 - Body
 
-  ```json
-  [
-    {
-        "id": Integer,
-        "name": String
-    },
-      ...
+```json
+[
+  {
+     "id": Integer,
+     "name": String
+  },
+   ...
+]
+```
 
-  ]
-  ```
-
-### 8. PUT /roles/:id
+### 7. GET /api/v1/web/roles
 
 #### Description
 
-- Update a products data based on given id
+- Get all the Role data
 
 #### Request
 
 - Headers
-  ```json
-  {
-    "Content-Type": "application/x-www-form-urlencoded",
-    "access_token": "string"
-  }
-  ```
-- Body
-  ```json
-  {
-    "name": String,
-  }
-  ```
 
-#### Response
-
-_201 - Created_
-
-- Body
-  ```json
-  {
-    "message": "Role with name ${payload.name} updated successfully"
-  }
-  ```
-
-_400 - Bad Request_
-
-- Body
-
-  ```json
-  {
-    "message": "role name is required"
-  }
-  ```
-
-### 9. DELETE /roles/:id
-
-#### Description
-
-- Remove a role data based on given id
-
-#### Request
-
-- Headers
-  ```json
-  {
-    "access_token": string
-  }
-  ```
+```json
+{
+  "access_token": string
+}
+```
 
 #### Response
 
 _200 - OK_
 
 - Body
-  ```json
-  {
-    "message": "Role with name ${role.name} deleted successfully"
-  }
-  ```
-  _404 - Not Found_
-- Body
 
-  ```json
+```json
+[
   {
-    "message": "data not found"
-  }
-  ```
+    "id": Integer,
+    "name": String
+  },
+    ...
+]
+```
 
 ## Global Error
 
-````
 _Response (403 - Internal Server Error)_
 
 ```json
 {
+  "code": 403,
   "message": "Not authorized as an admin"
 }
-````
+```
 
 _Response (500 - Internal Server Error)_
 
 ```json
 {
+  "code": 500,
   "message": "Internal server error"
 }
 ```
-
-- `POST /attendances`
-- `POST /permits`
-- `GET /permits`
-- `DELETE /permits`
-- `GET /logs`
-- `GET /logs/:id`
