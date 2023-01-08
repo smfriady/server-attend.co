@@ -6,6 +6,8 @@ const roleRouter = require("./role");
 const attendanceRouter = require("./attendance");
 const authRouter = require("./auth");
 
+const { authenticationEmployee } = require("../middlewares/authentication");
+
 const API_WEB = "/api/v1/web";
 const API_MOBILE = "/api/v1/mobile";
 
@@ -17,6 +19,8 @@ router.use(`${API_WEB}/auth`, authRouter);
 router.use(`${API_WEB}/employees`, employeeRouter);
 router.use(`${API_WEB}/departments`, departmentRouter);
 router.use(`${API_WEB}/roles`, roleRouter);
-router.use(`${API_WEB}/attendances`, attendanceRouter);
+
+router.use(`${API_MOBILE}/auth`, authRouter);
+router.use(`${API_MOBILE}/attendances`, authenticationEmployee, attendanceRouter);
 
 module.exports = router;
