@@ -144,7 +144,6 @@ const createEmployee = async (req, res, next) => {
       message: `Employee with email ${employee.email} created successfully`,
     });
   } catch (err) {
-    console.log(err);
     next(err);
   }
 };
@@ -157,7 +156,6 @@ const editEmployee = async (req, res, next) => {
       last_name,
       nik,
       education,
-      img_profile,
       birth_date,
       email,
       password,
@@ -194,9 +192,9 @@ const editEmployee = async (req, res, next) => {
 
     await Employee.update(payload, { where: { id: employee.id } });
 
-    res
-      .status(200)
-      .json({ message: `Employee with email ${payload.email} updated successfully` });
+    res.status(200).json({
+      message: `Employee with email ${payload.email} updated successfully`,
+    });
   } catch (err) {
     next(err);
   }
@@ -212,9 +210,9 @@ const deleteEmployee = async (req, res, next) => {
 
     await Employee.destroy({ where: { id } });
 
-    res
-      .status(200)
-      .json({ message: `Employee with email ${employee.email} deleted successfully` });
+    res.status(200).json({
+      message: `Employee with email ${employee.email} deleted successfully`,
+    });
   } catch (err) {
     next(err);
   }
