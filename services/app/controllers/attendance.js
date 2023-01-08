@@ -6,7 +6,8 @@ const createAttendance = async (req, res, next) => {
   const t = await sequelize.transaction();
 
   try {
-    const employee_id = 1;
+    const { id: employee_id } = req.employee;
+
     const { check_in_time, attendance_type, latitude, longitude } = req.body;
 
     const employee = await Employee.findByPk(employee_id);
