@@ -4,7 +4,7 @@ const errorHandler = (err, req, res, next) => {
 
   console.log(err.name, "<<<<<<<<<<<JanganLupaComentariKloProduction<<<<<<<<");
   console.log(err.errors, "<<<<<<<<<<<JanganLupaComentariKloProduction<<<<<<<<");
-  
+
   if (
     err.name === "SequelizeUniqueConstraintError" ||
     err.name === "SequelizeValidationError" ||
@@ -27,12 +27,22 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "NO_DATA_FOUND") {
     message = "no data found";
     code = 404;
-  } else if (err.message.includes("too large")) {
-    message = err.message;
-    code = err.http_code;
+  } else if (err.name === "NO_EMAIL") {
+    message = "email is required";
+    code = 400;
+  } else if (err.name === "NO_PASSWORD") {
+    message = "password is required";
+    code = 400;
   } else if (err.name === "UNAUTHORIZED") {
     message = "not authorized, no user login";
     code = 401;
+  } else if (err.name === "INVALID_CREDENTIAL") {
+    message = "invalid email or password";
+    code = 401;
+  } else if (err.message.includes("too large")) {
+    // nanti diperbaiki untuk error cloudinary
+    message = err.message;
+    code = err.http_code;
   } else {
     message = "internal server error";
     code = 500;
