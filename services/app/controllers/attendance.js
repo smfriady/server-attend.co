@@ -7,7 +7,7 @@ const createAttendance = async (req, res, next) => {
 
   try {
     const employee_id = 1;
-    const { check_in_time = new Date(), attendance_type } = req.body;
+    const { check_in_time, attendance_type, latitude, longitude } = req.body;
 
     const employee = await Employee.findByPk(employee_id);
     if (!employee) throw { name: "NO_DATA_FOUND" };
@@ -30,8 +30,8 @@ const createAttendance = async (req, res, next) => {
       const attendance = await Attendance.create(payload, { transaction: t });
 
       const payloadLocation = {
-        latitude: 1.222,
-        longitude: 2.222,
+        latitude,
+        longitude,
         type: "in",
         attendance_id: attendance.id,
       };
@@ -67,6 +67,9 @@ const updateStatus = async (req, res, next) => {
 
       const attendance = await Attendance.findOne(payload, { transaction: t });
     } else if (status === "attendance") {
+      /**
+       *
+       */
     } else {
       throw { name: "BAD_REQUEST_ATTENDANCE_TYPE" };
     }
