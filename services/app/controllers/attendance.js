@@ -106,14 +106,17 @@ const updateStatus = async (req, res, next) => {
 
 const getAttendances = async (req, res, next) => {
   try {
-    let { employee_id } = req.query;
+    let { id: employee_id } = req.employee;
     const option = {
       attributes: { exclude: ["createdAt", "updatedAt"] },
-      where: {},
+      include: {
+        model: Employee,
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+      },
     };
     if (employee_id) {
-      option.where.employee_id = {
-        employee_id,
+      option.where = {
+        employee_id: employee_id,
       };
     }
     const attendances = await Attendance.findAll(option);
@@ -127,9 +130,13 @@ const getAttendance = async (req, res, next) => {
   try {
     const option = {
       attributes: { exclude: ["createdAt", "updatedAt"] },
+      include: {
+        model: Employee,
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+      },
     };
     const { id } = req.params;
-    const attendance = await Attendance.findByPk(id);
+    const attendance = await Attendance.findByPk(id, option);
     res.json(attendance);
   } catch (err) {
     next(err);
