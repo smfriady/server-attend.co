@@ -1,9 +1,14 @@
-const cloudinary = require("cloudinary").v2;
+const cloudinary = require("../middlewares/cloudinary");
 
-cloudinary.config({
-  cloud_name: "ddqhog6dc",
-  api_key: "619366727343358",
-  api_secret: "Mxsv7Ht2srEmjB33N2gVCa309Ow",
-});
+class Cloudinary {
+  static async upload(content) {
+    try {
+      const image = await cloudinary.uploader.upload(content);
+      return image;
+    } catch (err) {
+      throw err;
+    }
+  }
+}
 
-module.exports = cloudinary;
+module.exports = Cloudinary;
