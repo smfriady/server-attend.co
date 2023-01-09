@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { multerUploads } = require("../middlewares/multer");
+const { multerUploads } = require("../helpers/multer");
 
 const {
   getEmployees,
