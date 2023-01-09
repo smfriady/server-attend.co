@@ -2,8 +2,8 @@ const errorHandler = (err, req, res, next) => {
   let code;
   let message;
 
-  console.log(err.name, "<<<<<<<<<<<JanganLupaComentariKloProduction<<<<<<<<");
-  console.log(err.errors, "<<<<<<<<<<<JanganLupaComentariKloProduction<<<<<<<<");
+  // console.log(err.name, "<<<<<<<<<<<JanganLupaComentariKloProduction<<<<<<<<");
+  // console.log(err.errors, "<<<<<<<<<<<JanganLupaComentariKloProduction<<<<<<<<");
 
   if (
     err.name === "SequelizeUniqueConstraintError" ||
@@ -39,6 +39,12 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "INVALID_CREDENTIAL") {
     message = "invalid email or password";
     code = 401;
+  } else if (err.name === "UPLOAD_ERROR") {
+    message = "upload error";
+    code = 400;
+  } else if (err.name === "MIMETYPE_NOT_SUPPORT") {
+    message = "mime type is not support";
+    code = 400;
   }
   //  nanti diperbaiki untuk error cloudinary
   //  else if (err.message.includes("too large")) {
