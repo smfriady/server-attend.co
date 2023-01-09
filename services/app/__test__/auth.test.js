@@ -4,7 +4,6 @@ if (process.env.NODE_ENV !== "production") {
 
 const app = require("../app");
 const request = require("supertest");
-// const { signJwt } = require("../helpers/jwt"); // samakan access_token dulu
 
 describe("POST /api/v1/web/auth", () => {
   const input = {

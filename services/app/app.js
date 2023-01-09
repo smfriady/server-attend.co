@@ -23,6 +23,6 @@ app.use(express.json());
 app.use(routes);
 app.use(errorHandler);
 
-app.listen(PORT, (_) => console.log(`Serverup at port ${PORT}`));
+// app.listen(PORT, (_) => console.log(`Serverup at port ${PORT}`));
 
-// module.exports = app;
+module.exports = app;
