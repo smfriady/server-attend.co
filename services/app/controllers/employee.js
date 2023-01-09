@@ -1,6 +1,6 @@
 const { Employee, Department, Role } = require("../models/index");
 const DatauriParser = require("datauri/parser");
-const cloudinary = require("../middlewares/cloudinary");
+const Cloudinary = require("../helpers/cloudinary");
 const { Op } = require("sequelize");
 const e = require("express");
 
@@ -33,35 +33,28 @@ const getEmployees = async (req, res, next) => {
       ],
       order: [["id", "ASC"]],
     };
-
     if (firstName !== "") {
-      if (firstName !== undefined) {
-        option.where = {
-          first_name: { [Op.iLike]: `%${firstName}%` },
-        };
-      }
+      option.where = {
+        first_name: { [Op.iLike]: `%${firstName}%` },
+      };
     }
 
     if (page !== "") {
-      if (page !== undefined) {
-        option.offset = Number((page - 1) * limit);
-      }
+      option.offset = Number((page - 1) * limit);
     }
 
     if (filter !== "") {
-      if (filter !== "undefined") {
-        option.include = [
-          {
-            model: Department,
-            where: { id: filter },
-            attributes: { exclude: ["id", "createdAt", "updatedAt"] },
-          },
-          {
-            model: Role,
-            attributes: { exclude: ["id", "createdAt", "updatedAt"] },
-          },
-        ];
-      }
+      option.include = [
+        {
+          model: Department,
+          where: { id: filter },
+          attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+        },
+        {
+          model: Role,
+          attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+        },
+      ];
     }
 
     const employees = await Employee.findAndCountAll(option);
@@ -77,8 +70,6 @@ const getEmployees = async (req, res, next) => {
 const getEmployee = async (req, res, next) => {
   try {
     const { id } = req.params;
-
-    if (isNaN(id)) throw { name: "NO_DATA_FOUND" };
 
     let option = {
       attributes: { exclude: ["password", "createdAt", "updatedAt"] },
@@ -122,7 +113,7 @@ const createEmployee = async (req, res, next) => {
 
     const parser = new DatauriParser();
     const pathImage = parser.format(req.file.originalname, req.file.buffer);
-    const image = await cloudinary.uploader.upload(pathImage.content);
+    const image = await Cloudinary.upload(pathImage.content);
     const imgProfile = image.secure_url;
 
     const payload = {
@@ -140,7 +131,6 @@ const createEmployee = async (req, res, next) => {
     };
 
     const employee = await Employee.create(payload);
-
     res.status(201).json({
       message: `Employee with email ${employee.email} created successfully`,
     });
@@ -165,15 +155,13 @@ const editEmployee = async (req, res, next) => {
       img_profile,
     } = req.body;
 
-    if (isNaN(id)) throw { name: "NO_DATA_FOUND" };
-
     const employee = await Employee.findByPk(id);
     if (!employee) throw { name: "NO_DATA_FOUND" };
 
     if (req.file) {
       const parser = new DatauriParser();
       const pathImage = parser.format(req.file.originalname, req.file.buffer);
-      const image = await cloudinary.uploader.upload(pathImage.content);
+      const image = await Cloudinary.upload(pathImage.content);
       const imgProfile = image.secure_url;
 
       const payload = {
@@ -191,11 +179,9 @@ const editEmployee = async (req, res, next) => {
 
       await Employee.update(payload, { where: { id: employee.id } });
 
-      res
-        .status(200)
-        .json({
-          message: `Employee with email ${payload.email} updated successfully`,
-        });
+      res.status(200).json({
+        message: `Employee with email ${payload.email} updated successfully`,
+      });
     } else {
       const payload = {
         first_name,
@@ -204,7 +190,6 @@ const editEmployee = async (req, res, next) => {
         education,
         birth_date,
         email,
-        password,
         base_salary,
         department_id,
         role_id,
@@ -213,11 +198,9 @@ const editEmployee = async (req, res, next) => {
 
       await Employee.update(payload, { where: { id: employee.id } });
 
-      res
-        .status(200)
-        .json({
-          message: `Employee with email ${payload.email} updated successfully`,
-        });
+      res.status(200).json({
+        message: `Employee with email ${payload.email} updated successfully`,
+      });
     }
   } catch (err) {
     next(err);
@@ -227,18 +210,15 @@ const editEmployee = async (req, res, next) => {
 const deleteEmployee = async (req, res, next) => {
   try {
     const { id } = req.params;
-    if (isNaN(id)) throw { name: "NO_DATA_FOUND" };
 
     const employee = await Employee.findByPk(id);
     if (!employee) throw { name: "NO_DATA_FOUND" };
 
     await Employee.destroy({ where: { id } });
 
-    res
-      .status(200)
-      .json({
-        message: `Employee with email ${employee.email} deleted successfully`,
-      });
+    res.status(200).json({
+      message: `Employee with email ${employee.email} deleted successfully`,
+    });
   } catch (err) {
     next(err);
   }
