@@ -1,7 +1,7 @@
 "use strict";
 
 const dataEmployee = require("../data/profiles.json");
-const { hashPassword } = require("../middlewares/bycrypt");
+const { hashPassword } = require("../helpers/bycrypt");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {

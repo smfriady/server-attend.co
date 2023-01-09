@@ -12,13 +12,7 @@ const getEmployees = async (req, res, next) => {
 
     const option = {
       attributes: {
-        exclude: [
-          "password",
-          "createdAt",
-          "updatedAt",
-          "department_id",
-          "role_id",
-        ],
+        exclude: ["password", "createdAt", "updatedAt", "department_id", "role_id"],
       },
       limit,
       include: [
@@ -59,9 +53,7 @@ const getEmployees = async (req, res, next) => {
 
     const employees = await Employee.findAndCountAll(option);
 
-    res
-      .status(200)
-      .json({ total: employees.count, employees: employees.rows, page: +page });
+    res.status(200).json({ total: employees.count, employees: employees.rows, page: +page });
   } catch (err) {
     next(err);
   }
