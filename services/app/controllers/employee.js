@@ -1,6 +1,6 @@
 const { Employee, Department, Role } = require("../models/index");
 const DatauriParser = require("datauri/parser");
-const cloudinary = require("../middlewares/cloudinary");
+const cloudinary = require("../helpers/cloudinary");
 const { Op } = require("sequelize");
 const e = require("express");
 
@@ -191,11 +191,9 @@ const editEmployee = async (req, res, next) => {
 
       await Employee.update(payload, { where: { id: employee.id } });
 
-      res
-        .status(200)
-        .json({
-          message: `Employee with email ${payload.email} updated successfully`,
-        });
+      res.status(200).json({
+        message: `Employee with email ${payload.email} updated successfully`,
+      });
     } else {
       const payload = {
         first_name,
@@ -213,11 +211,9 @@ const editEmployee = async (req, res, next) => {
 
       await Employee.update(payload, { where: { id: employee.id } });
 
-      res
-        .status(200)
-        .json({
-          message: `Employee with email ${payload.email} updated successfully`,
-        });
+      res.status(200).json({
+        message: `Employee with email ${payload.email} updated successfully`,
+      });
     }
   } catch (err) {
     next(err);
@@ -234,11 +230,9 @@ const deleteEmployee = async (req, res, next) => {
 
     await Employee.destroy({ where: { id } });
 
-    res
-      .status(200)
-      .json({
-        message: `Employee with email ${employee.email} deleted successfully`,
-      });
+    res.status(200).json({
+      message: `Employee with email ${employee.email} deleted successfully`,
+    });
   } catch (err) {
     next(err);
   }

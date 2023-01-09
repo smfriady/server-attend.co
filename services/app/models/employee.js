@@ -1,6 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
-const { hashPassword } = require("../middlewares/bycrypt");
+const { hashPassword } = require("../helpers/bycrypt");
 
 module.exports = (sequelize, DataTypes) => {
   class Employee extends Model {

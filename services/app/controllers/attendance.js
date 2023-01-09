@@ -1,6 +1,12 @@
 const DatauriParser = require("datauri/parser");
-const cloudinary = require("../middlewares/cloudinary");
-const { Attendance, Location, Employee, sequelize } = require("../models/index");
+const cloudinary = require("../helpers/cloudinary");
+const {
+  Attendance,
+  Location,
+  Employee,
+  sequelize,
+} = require("../models/index");
+const Op = require("sequelize");
 
 const createAttendance = async (req, res, next) => {
   const t = await sequelize.transaction();
@@ -37,7 +43,9 @@ const createAttendance = async (req, res, next) => {
         attendance_id: attendance.id,
       };
 
-      const createLocation = await Location.create(payloadLocation, { transaction: t });
+      const createLocation = await Location.create(payloadLocation, {
+        transaction: t,
+      });
 
       await t.commit();
 
@@ -54,23 +62,40 @@ const createAttendance = async (req, res, next) => {
 };
 
 const updateStatus = async (req, res, next) => {
-  const t = await sequelize.transaction();
-
   try {
-    const employee_id = 1;
+    const { id } = req.params;
+    const { attendance_type, check_out_time } = req.body;
 
-    const { status } = req.params;
-    const { check_out_time = new Date() } = req.body;
-
-    if (status === "permit") {
-      const employee = await Employee.findByPk(employee_id);
-      if (!employee) throw { name: "NO_DATA_FOUND" };
-
-      const attendance = await Attendance.findOne(payload, { transaction: t });
-    } else if (status === "attendance") {
-      /**
-       *
-       */
+    if (attendance_type === "permit") {
+      const attendance = await Attendance.findByPk(id);
+      if (!attendance) throw { name: "NO_DATA_FOUND" };
+      await Attendance.update(
+        { attendance_type, check_out_time },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+      const employee = await Employee.findByPk(attendance.employee_id);
+      res.status(201).json({
+        message: `${employee.first_name} has been check out with status ${attendance_type}`,
+      });
+    } else if (attendance_type === "attendance") {
+      const attendance = await Attendance.findByPk(id);
+      if (!attendance) throw { name: "NO_DATA_FOUND" };
+      await Attendance.update(
+        { attendance_type, check_out_time },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+      const employee = await Employee.findByPk(attendance.employee_id);
+      res.status(201).json({
+        message: `${employee.first_name} has been check out with status ${attendance_type}`,
+      });
     } else {
       throw { name: "BAD_REQUEST_ATTENDANCE_TYPE" };
     }
@@ -78,4 +103,41 @@ const updateStatus = async (req, res, next) => {
     next(err);
   }
 };
-module.exports = { createAttendance, updateStatus };
+
+const getAttendances = async (req, res, next) => {
+  try {
+    let { employee_id } = req.query;
+    const option = {
+      attributes: { exclude: ["createdAt", "updatedAt"] },
+      where: {},
+    };
+    if (employee_id) {
+      option.where.employee_id = {
+        employee_id,
+      };
+    }
+    const attendances = await Attendance.findAll(option);
+    res.json(attendances);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getAttendance = async (req, res, next) => {
+  try {
+    const option = {
+      attributes: { exclude: ["createdAt", "updatedAt"] },
+    };
+    const { id } = req.params;
+    const attendance = await Attendance.findByPk(id);
+    res.json(attendance);
+  } catch (err) {
+    next(err);
+  }
+};
+module.exports = {
+  createAttendance,
+  updateStatus,
+  getAttendance,
+  getAttendances,
+};
