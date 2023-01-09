@@ -42,9 +42,6 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "UPLOAD_ERROR") {
     message = "upload error";
     code = 400;
-  } else if (err.name === "MIMETYPE_NOT_SUPPORT") {
-    message = "mime type is not support";
-    code = 400;
   }
   //  nanti diperbaiki untuk error cloudinary
   //  else if (err.message.includes("too large")) {
