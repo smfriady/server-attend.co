@@ -298,7 +298,7 @@ _404 - Not Found_
 }
 ```
 
-_201 - Created_
+_200 - Created_
 
 - Body
 
