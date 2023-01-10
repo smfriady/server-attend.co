@@ -10,9 +10,9 @@ const {
 } = require("../controllers/employee");
 
 router.get("/", getEmployees);
-router.post("/", multerUploads.single("img_profile"), createEmployee);
+router.post("/", multerUploads.single("imgProfile"), createEmployee);
 router.get("/:id", getEmployee);
-router.put("/:id", multerUploads.single("img_profile"), editEmployee);
+router.put("/:id", multerUploads.single("imgProfile"), editEmployee);
 router.delete("/:id", deleteEmployee);
 
 module.exports = router;
