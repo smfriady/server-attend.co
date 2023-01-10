@@ -9,11 +9,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      first_name: {
+      firstName: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      last_name: {
+      lastName: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -25,11 +25,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      img_profile: {
+      imgProfile: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      birth_date: {
+      birthDate: {
         type: Sequelize.DATE,
         allowNull: false,
       },
@@ -42,11 +42,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      base_salary: {
+      baseSalary: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      department_id: {
+      departmentId: {
         type: Sequelize.INTEGER,
         allowNull: true,
         references: {
@@ -54,7 +54,7 @@ module.exports = {
           key: "id",
         },
       },
-      role_id: {
+      roleId: {
         type: Sequelize.INTEGER,
         allowNull: true,
         references: {

@@ -12,7 +12,13 @@ const getEmployees = async (req, res, next) => {
 
     const option = {
       attributes: {
-        exclude: ["password", "createdAt", "updatedAt", "department_id", "role_id"],
+        exclude: [
+          "password",
+          "createdAt",
+          "updatedAt",
+          "departmentId",
+          "roleId",
+        ],
       },
       limit,
       include: [
@@ -29,7 +35,7 @@ const getEmployees = async (req, res, next) => {
     };
     if (firstName !== "") {
       option.where = {
-        first_name: { [Op.iLike]: `%${firstName}%` },
+        firstName: { [Op.iLike]: `%${firstName}%` },
       };
     }
 
@@ -53,7 +59,9 @@ const getEmployees = async (req, res, next) => {
 
     const employees = await Employee.findAndCountAll(option);
 
-    res.status(200).json({ total: employees.count, employees: employees.rows, page: +page });
+    res
+      .status(200)
+      .json({ total: employees.count, employees: employees.rows, page: +page });
   } catch (err) {
     next(err);
   }
@@ -89,18 +97,18 @@ const getEmployee = async (req, res, next) => {
 
 const createEmployee = async (req, res, next) => {
   try {
-    if (!req.file) throw { name: "BAD_REQUEST_IMG_PROFILE" };
+    if (!req.file) throw { name: "BAD_REQUEST_imgProfile" };
     const {
-      first_name,
-      last_name,
+      firstName,
+      lastName,
       nik,
       education,
-      birth_date,
+      birthDate,
       email,
       password,
-      base_salary,
-      department_id,
-      role_id,
+      baseSalary,
+      departmentId,
+      roleId,
     } = req.body;
 
     const parser = new DatauriParser();
@@ -109,17 +117,17 @@ const createEmployee = async (req, res, next) => {
     const imgProfile = image.secure_url;
 
     const payload = {
-      first_name,
-      last_name,
+      firstName,
+      lastName,
       nik,
       education,
-      birth_date,
+      birthDate,
       email,
       password,
-      base_salary,
-      department_id,
-      role_id,
-      img_profile: imgProfile,
+      baseSalary,
+      departmentId,
+      roleId,
+      imgProfile: imgProfile,
     };
 
     const employee = await Employee.create(payload);
@@ -135,16 +143,16 @@ const editEmployee = async (req, res, next) => {
   try {
     const { id } = req.params;
     const {
-      first_name,
-      last_name,
+      firstName,
+      lastName,
       nik,
       education,
-      birth_date,
+      birthDate,
       email,
-      base_salary,
-      department_id,
-      role_id,
-      img_profile,
+      baseSalary,
+      departmentId,
+      roleId,
+      imgProfile,
     } = req.body;
 
     const employee = await Employee.findByPk(id);
@@ -157,16 +165,16 @@ const editEmployee = async (req, res, next) => {
       const imgProfile = image.secure_url;
 
       const payload = {
-        first_name,
-        last_name,
+        firstName,
+        lastName,
         nik,
         education,
-        birth_date,
+        birthDate,
         email,
-        base_salary,
-        department_id,
-        role_id,
-        img_profile: imgProfile,
+        baseSalary,
+        departmentId,
+        roleId,
+        imgProfile: imgProfile,
       };
 
       await Employee.update(payload, { where: { id: employee.id } });
@@ -176,16 +184,16 @@ const editEmployee = async (req, res, next) => {
       });
     } else {
       const payload = {
-        first_name,
-        last_name,
+        firstName,
+        lastName,
         nik,
         education,
-        birth_date,
+        birthDate,
         email,
-        base_salary,
-        department_id,
-        role_id,
-        img_profile,
+        baseSalary,
+        departmentId,
+        roleId,
+        imgProfile,
       };
 
       await Employee.update(payload, { where: { id: employee.id } });

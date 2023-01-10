@@ -23,7 +23,7 @@ module.exports = {
         allowNull: false,
         defaultValue: "in",
       },
-      attendance_id: {
+      attendanceId: {
         type: Sequelize.INTEGER,
         references: {
           model: "Attendances",

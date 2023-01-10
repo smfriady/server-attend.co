@@ -12,7 +12,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
-    let dataAttandance = require("../data/attendance.json").map((el) => {
+    let dataAttandance = require("../data/attendance2.json").map((el) => {
       el.createdAt = new Date();
       el.updatedAt = new Date();
       return el;

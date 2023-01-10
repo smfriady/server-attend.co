@@ -11,14 +11,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Employee.belongsTo(models.Department, { foreignKey: "department_id" });
-      Employee.belongsTo(models.Role, { foreignKey: "role_id" });
-      Employee.hasMany(models.Attendance, { foreignKey: "employee_id" });
+      Employee.belongsTo(models.Department, { foreignKey: "departmentId" });
+      Employee.belongsTo(models.Role, { foreignKey: "roleId" });
+      Employee.hasMany(models.Attendance, { foreignKey: "employeeId" });
+      Employee.hasMany(models.Salary, { foreignKey: "employeeId" });
     }
   }
   Employee.init(
     {
-      first_name: {
+      firstName: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -26,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
           notNull: { msg: "first name is required" },
         },
       },
-      last_name: {
+      lastName: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -50,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
           notNull: { msg: "education is required" },
         },
       },
-      img_profile: {
+      imgProfile: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -58,7 +59,7 @@ module.exports = (sequelize, DataTypes) => {
           notNull: { msg: "image profile is required" },
         },
       },
-      birth_date: {
+      birthDate: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -84,15 +85,15 @@ module.exports = (sequelize, DataTypes) => {
           len: { args: [6], msg: "password min 6 characters" },
         },
       },
-      base_salary: DataTypes.INTEGER,
-      department_id: {
+      baseSalary: DataTypes.INTEGER,
+      departmentId: {
         type: DataTypes.INTEGER,
         references: {
           model: "Departments",
           key: "id",
         },
       },
-      role_id: {
+      roleId: {
         type: DataTypes.INTEGER,
         references: {
           model: "Roles",
