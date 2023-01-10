@@ -84,7 +84,7 @@ const updateStatus = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { id: employee_id } = req.employee;
-    const { attendance_type, check_out_time, latitude, longitude } = req.body;
+    const { check_out_time, attendance_type, latitude, longitude } = req.body;
 
     const check_out = dayjs(check_out_time);
 
@@ -105,10 +105,22 @@ const updateStatus = async (req, res, next) => {
         const attendance = await Attendance.findByPk(id);
         if (!attendance) throw { name: "NO_DATA_FOUND" };
         await Attendance.update(
-          { attendance_type, check_out_time, latitude, longitude },
+          { check_out_time, attendance_type },
           {
             where: {
-              id,
+              id: id,
+            },
+          }
+        );
+        await Location.update(
+          {
+            latitude,
+            longitude,
+            type: "out",
+          },
+          {
+            where: {
+              attendance_id: id,
             },
           }
         );
@@ -120,10 +132,22 @@ const updateStatus = async (req, res, next) => {
         const attendance = await Attendance.findByPk(id);
         if (!attendance) throw { name: "NO_DATA_FOUND" };
         await Attendance.update(
-          { attendance_type, check_out_time, latitude, longitude },
+          { check_out_time, attendance_type },
           {
             where: {
               id,
+            },
+          }
+        );
+        await Location.update(
+          {
+            latitude,
+            longitude,
+            type: "out",
+          },
+          {
+            where: {
+              attendance_id: id,
             },
           }
         );

@@ -46,13 +46,13 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "location type is required" },
           notEmpty: { msg: "location type is required" },
-          isEven(values) {
-            if (values !== "in") {
-              if (values !== "out") {
-                throw new Error("wrong type location");
-              }
-            }
-          },
+          // isEven(values) {
+          //   if (values !== "in") {
+          //     if (values !== "out") {
+          //       throw new Error("wrong type location");
+          //     }
+          //   }
+          // },
         },
       },
       attendance_id: {
@@ -66,11 +66,11 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      hooks: {
-        beforeValidate: (instance, _) => {
-          instance.type = "in";
-        },
-      },
+      // hooks: {
+      //   beforeValidate: (instance, _) => {
+      //     instance.type = "in";
+      //   },
+      // },
       sequelize,
       modelName: "Location",
     }
