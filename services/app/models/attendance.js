@@ -9,16 +9,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Attendance.belongsTo(models.Employee, { foreignKey: "employee_id" });
-      Attendance.hasOne(models.Location, { foreignKey: "attendance_id" });
+      Attendance.belongsTo(models.Employee, { foreignKey: "employeeId" });
+      Attendance.hasOne(models.Location, { foreignKey: "attendanceId" });
     }
   }
   Attendance.init(
     {
-      check_in_time: DataTypes.DATE,
-      check_out_time: DataTypes.DATE,
-
-      attendance_type: {
+      checkInTime: DataTypes.DATE,
+      checkOutTime: DataTypes.DATE,
+      attendanceType: {
         type: DataTypes.ENUM,
         allowNull: false,
         values: ["absent", "attendance", "sick", "permit"],
@@ -32,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       attachment: {
         type: DataTypes.STRING,
       },
-      employee_id: {
+      employeeId: {
         type: DataTypes.INTEGER,
       },
     },

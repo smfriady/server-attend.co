@@ -2,29 +2,26 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Attendances", {
+    await queryInterface.createTable("Salaries", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      checkInTime: {
-        type: Sequelize.DATE,
-      },
-      checkOutTime: {
-        type: Sequelize.DATE,
-      },
-      attendanceType: {
-        type: Sequelize.ENUM,
-        values: ["absent", "attendance", "sick", "paid leave", "permit"],
+      amount: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: "absent",
       },
-      attachment: {
-        type: Sequelize.STRING,
+      payment_date: {
+        type: Sequelize.DATE,
+        allowNull: false,
       },
-      employeeId: {
+      periode_salary: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      employee_id: {
         type: Sequelize.INTEGER,
         references: {
           model: "Employees",
@@ -44,6 +41,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Attendances");
+    await queryInterface.dropTable("Salaries");
   },
 };

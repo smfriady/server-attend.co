@@ -27,7 +27,7 @@ List of available Attendances endpoints:
 - `POST /api/v1/mobile/attendances`
 - `GET /api/v1/mobile/attendances`
 - `GET /api/v1/mobile/attendances/:id`
-- `PATCH /api/v1/mobile/attendances/:id`
+- `PUT /api/v1/mobile/attendances/:id`
 
 ### 1. POST /api/v1/web/auth/login
 
@@ -534,7 +534,7 @@ OR
 }
 ```
 
-### 10. PATCH /api/v1/mobile/attendances
+### 10. PUT /api/v1/mobile/attendances
 
 #### Description
 
@@ -610,6 +610,7 @@ _200 - OK_
     "attendance_type": ENUM ( ["absent", "attendance", "sick", "permit"],),
     "attachment":String,
     "employee_id": Integer,
+    "updatedAt": Date,
     "Employee": {
       "id": Integer,
       "first_name": String,

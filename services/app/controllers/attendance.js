@@ -12,29 +12,29 @@ const {
 const createAttendance = async (req, res, next) => {
   const t = await sequelize.transaction();
   try {
-    const { id: employee_id } = req.employee;
+    const { id: employeeId } = req.employee;
 
-    const { check_in_time, attendance_type, latitude, longitude } = req.body;
+    const { checkInTime, attendanceType, latitude, longitude } = req.body;
 
-    const check_in = dayjs(check_in_time);
+    const checkIn = dayjs(checkInTime);
 
     const absent = await Attendance.findOne({
       where: {
-        check_in_time: {
+        checkInTime: {
           [Op.between]: [
-            check_in.startOf("date").toDate(),
-            check_in.endOf("date").toDate(),
+            checkIn.startOf("date").toDate(),
+            checkIn.endOf("date").toDate(),
           ],
         },
-        employee_id: employee_id,
+        employeeId: employeeId,
       },
     });
 
     if (!absent) {
-      const employee = await Employee.findByPk(employee_id);
+      const employee = await Employee.findByPk(employeeId);
       if (!employee) throw { name: "NO_DATA_FOUND" };
 
-      if (attendance_type === "absent" || attendance_type === "sick") {
+      if (attendanceType === "absent" || attendanceType === "sick") {
         if (!req.file) throw { name: "BAD_REQUEST_ATTACHMENT" };
 
         const parser = new DatauriParser();
@@ -43,10 +43,10 @@ const createAttendance = async (req, res, next) => {
         const attachment = image.secure_url;
 
         const payload = {
-          check_in_time,
+          checkInTime,
           attachment,
-          attendance_type,
-          employee_id: employee.id,
+          attendanceType,
+          employeeId: employee.id,
         };
 
         const attendance = await Attendance.create(payload, { transaction: t });
@@ -68,10 +68,10 @@ const createAttendance = async (req, res, next) => {
           message: `${employee.first_name} has been check ${createLocation.type}`,
         });
       } else {
-        throw { name: "BAD_REQUEST_ATTENDANCE_TYPE" };
+        throw { name: "BAD_REQUEST_attendanceType" };
       }
     } else {
-      throw { name: "BAD_REQUEST_CHECK_IN" };
+      throw { name: "BAD_REQUEST_checkIn" };
     }
   } catch (err) {
     console.log(err);
@@ -83,29 +83,29 @@ const createAttendance = async (req, res, next) => {
 const updateStatus = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { id: employee_id } = req.employee;
-    const { check_out_time, attendance_type, latitude, longitude } = req.body;
+    const { id: employeeId } = req.employee;
+    const { checkOutTime, attendanceType, latitude, longitude } = req.body;
 
-    const check_out = dayjs(check_out_time);
+    const checkOut = dayjs(checkOutTime);
 
     const absent = await Attendance.findOne({
       where: {
-        check_out_time: {
+        checkOutTime: {
           [Op.between]: [
-            check_out.startOf("date").toDate(),
-            check_out.endOf("date").toDate(),
+            checkOut.startOf("date").toDate(),
+            checkOut.endOf("date").toDate(),
           ],
         },
-        employee_id: employee_id,
+        employeeId: employeeId,
       },
     });
 
     if (!absent) {
-      if (attendance_type === "permit") {
+      if (attendanceType === "permit") {
         const attendance = await Attendance.findByPk(id);
         if (!attendance) throw { name: "NO_DATA_FOUND" };
         await Attendance.update(
-          { check_out_time, attendance_type },
+          { checkOutTime, attendanceType },
           {
             where: {
               id: id,
@@ -124,15 +124,15 @@ const updateStatus = async (req, res, next) => {
             },
           }
         );
-        const employee = await Employee.findByPk(attendance.employee_id);
+        const employee = await Employee.findByPk(attendance.employeeId);
         res.status(201).json({
-          message: `${employee.first_name} has been check out with status ${attendance_type}`,
+          message: `${employee.first_name} has been check out with status ${attendanceType}`,
         });
-      } else if (attendance_type === "attendance") {
+      } else if (attendanceType === "attendance") {
         const attendance = await Attendance.findByPk(id);
         if (!attendance) throw { name: "NO_DATA_FOUND" };
         await Attendance.update(
-          { check_out_time, attendance_type },
+          { checkOutTime, attendanceType },
           {
             where: {
               id,
@@ -151,15 +151,15 @@ const updateStatus = async (req, res, next) => {
             },
           }
         );
-        const employee = await Employee.findByPk(attendance.employee_id);
+        const employee = await Employee.findByPk(attendance.employeeId);
         res.status(201).json({
-          message: `${employee.first_name} has been check out with status ${attendance_type}`,
+          message: `${employee.first_name} has been check out with status ${attendanceType}`,
         });
       } else {
-        throw { name: "BAD_REQUEST_ATTENDANCE_TYPE" };
+        throw { name: "BAD_REQUEST_attendanceType" };
       }
     } else {
-      throw { name: "BAD_REQUEST_CHECK_OUT" };
+      throw { name: "BAD_REQUEST_checkOut" };
     }
   } catch (err) {
     next(err);
@@ -168,17 +168,18 @@ const updateStatus = async (req, res, next) => {
 
 const getAttendances = async (req, res, next) => {
   try {
-    let { id: employee_id } = req.employee;
+    let { id: employeeId } = req.employee;
     const option = {
-      attributes: { exclude: ["createdAt", "updatedAt"] },
+      attributes: { exclude: ["createdAt"] },
       include: {
         model: Employee,
         attributes: { exclude: ["createdAt", "updatedAt"] },
       },
+      order: [["updatedAt", "DESC"]],
     };
-    if (employee_id) {
+    if (employeeId) {
       option.where = {
-        employee_id: employee_id,
+        employeeId: employeeId,
       };
     }
     const attendances = await Attendance.findAll(option);
