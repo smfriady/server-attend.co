@@ -74,7 +74,6 @@ const createAttendance = async (req, res, next) => {
 
 const updateStatus = async (req, res, next) => {
   try {
-    const { id } = req.params;
     const { id: employeeId } = req.employee;
     const { checkOutTime, attendanceType, latitude, longitude } = req.body;
 
@@ -97,7 +96,7 @@ const updateStatus = async (req, res, next) => {
           { checkOutTime, attendanceType },
           {
             where: {
-              id: id,
+              id: absent.id,
             },
           }
         );
