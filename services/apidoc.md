@@ -528,6 +528,10 @@ OR
   "code": 400,
   "message": "attachment is required"
 }
+{
+  "code": 400,
+  "message": "you already check in"
+}
 ```
 
 ### 10. PATCH /api/v1/mobile/attendances
@@ -544,6 +548,8 @@ OR
 {
   "check_out_time": Date,
   "attendance_type": String,
+  "latitude": Float,
+  "longitude": Float
 }
 ```
 
@@ -565,6 +571,11 @@ _400 - Bad Request_
 {
   "code": 400,
   "message": "wrong attendance type"
+}
+OR
+{
+  "code": 400,
+  "message": "you already check out"
 }
 ```
 

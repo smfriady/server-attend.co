@@ -8,6 +8,7 @@
     "cloudinary": "^1.33.0",
     "cors": "^2.8.5",
     "datauri": "^4.1.0",
+    "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",

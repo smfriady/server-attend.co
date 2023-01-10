@@ -2,16 +2,8 @@ const errorHandler = (err, req, res, next) => {
   let code;
   let message;
 
-<<<<<<< HEAD
-  console.log(err.name, "<<<<<<<<<<<JanganLupaComentariKloProduction<<<<<<<<");
-  console.log(
-    err.errors,
-    "<<<<<<<<<<<JanganLupaComentariKloProduction<<<<<<<<"
-  );
-=======
   // console.log(err.name, "<<<<<<<<<<<JanganLupaComentariKloProduction<<<<<<<<");
   // console.log(err.errors, "<<<<<<<<<<<JanganLupaComentariKloProduction<<<<<<<<");
->>>>>>> origin
 
   if (
     err.name === "SequelizeUniqueConstraintError" ||
@@ -34,6 +26,9 @@ const errorHandler = (err, req, res, next) => {
     code = 400;
   } else if (err.name === "BAD_REQUEST_CHECK_IN") {
     message = "you already check in";
+    code = 400;
+  } else if (err.name === "BAD_REQUEST_CHECK_OUT") {
+    message = "you already check out";
     code = 400;
   } else if (err.name === "NO_DATA_FOUND") {
     message = "no data found";
