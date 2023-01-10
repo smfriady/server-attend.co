@@ -2,11 +2,16 @@ const errorHandler = (err, req, res, next) => {
   let code;
   let message;
 
+<<<<<<< HEAD
   console.log(err.name, "<<<<<<<<<<<JanganLupaComentariKloProduction<<<<<<<<");
   console.log(
     err.errors,
     "<<<<<<<<<<<JanganLupaComentariKloProduction<<<<<<<<"
   );
+=======
+  // console.log(err.name, "<<<<<<<<<<<JanganLupaComentariKloProduction<<<<<<<<");
+  // console.log(err.errors, "<<<<<<<<<<<JanganLupaComentariKloProduction<<<<<<<<");
+>>>>>>> origin
 
   if (
     err.name === "SequelizeUniqueConstraintError" ||
@@ -45,6 +50,9 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "INVALID_CREDENTIAL") {
     message = "invalid email or password";
     code = 401;
+  } else if (err.name === "UPLOAD_ERROR") {
+    message = "upload error";
+    code = 400;
   }
   //  nanti diperbaiki untuk error cloudinary
   //  else if (err.message.includes("too large")) {

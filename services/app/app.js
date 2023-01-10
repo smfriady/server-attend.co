@@ -17,12 +17,12 @@ if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
 }
 app.use(cors());
-app.use(express.urlencoded({ extended: false, limit: "5mb" }));
+app.use(express.urlencoded({ extended: false, limit: "50mb" }));
 app.use(express.json());
 
 app.use(routes);
 app.use(errorHandler);
 
-app.listen(PORT, (_) => console.log(`Serverup at port ${PORT}`));
+// app.listen(PORT, (_) => console.log(`Serverup at port ${PORT}`));
 
-// module.exports = app;
+module.exports = app;

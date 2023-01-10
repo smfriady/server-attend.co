@@ -4,25 +4,20 @@ if (process.env.NODE_ENV !== "production") {
 
 const app = require("../app");
 const request = require("supertest");
-// const { signJwt } = require("../helpers/jwt"); // samakan access_token dulu
 
 describe("POST /api/v1/web/auth", () => {
   const input = {
-    email: "cnutbeemy@icq.com",
-    password: "Im1vH7",
+    email: "mdemichele4@facebook.com",
+    password: "ZEaZOT9SBm3U",
   };
 
   test("POST /api/v1/web/auth/login - 200 - OK", async () => {
     const res = await request(app).post("/api/v1/web/auth/login").send(input);
 
-    // const access_token = signJwt({ id: 36 }, process.env.JWT_SECRET_EMPLOYEE, {
-    //   expiresIn: "1d",
-    // });
-
     expect(res.status).toBe(200);
     expect(res.body).toBeInstanceOf(Object);
 
-    // expect(res.body).toHaveProperty("access_token", access_token); // samakan access_token
+    expect(res.body).toHaveProperty("access_token", expect.any(String));
     expect(res.body).toHaveProperty("email", input.email);
   });
 

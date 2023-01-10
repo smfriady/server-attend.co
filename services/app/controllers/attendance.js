@@ -1,12 +1,11 @@
 const DatauriParser = require("datauri/parser");
-const cloudinary = require("../helpers/cloudinary");
+const cloudinary = require("../middlewares/cloudinary");
 const {
   Attendance,
   Location,
   Employee,
   sequelize,
 } = require("../models/index");
-const Op = require("sequelize");
 
 const createAttendance = async (req, res, next) => {
   const t = await sequelize.transaction();
