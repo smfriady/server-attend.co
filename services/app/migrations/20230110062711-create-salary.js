@@ -13,15 +13,15 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      payment_date: {
+      paymentDate: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      periode_salary: {
+      periodeSalary: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      employee_id: {
+      employeeId: {
         type: Sequelize.INTEGER,
         references: {
           model: "Employees",
