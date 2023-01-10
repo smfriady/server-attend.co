@@ -3,7 +3,10 @@ const errorHandler = (err, req, res, next) => {
   let message;
 
   console.log(err.name, "<<<<<<<<<<<JanganLupaComentariKloProduction<<<<<<<<");
-  console.log(err.errors, "<<<<<<<<<<<JanganLupaComentariKloProduction<<<<<<<<");
+  console.log(
+    err.errors,
+    "<<<<<<<<<<<JanganLupaComentariKloProduction<<<<<<<<"
+  );
 
   if (
     err.name === "SequelizeUniqueConstraintError" ||
@@ -23,6 +26,9 @@ const errorHandler = (err, req, res, next) => {
     code = 400;
   } else if (err.name === "BAD_REQUEST_ATTACHMENT") {
     message = "attachment is required";
+    code = 400;
+  } else if (err.name === "BAD_REQUEST_CHECK_IN") {
+    message = "you already check in";
     code = 400;
   } else if (err.name === "NO_DATA_FOUND") {
     message = "no data found";

@@ -25,7 +25,9 @@ List of available Roles endpoints:
 List of available Attendances endpoints:
 
 - `POST /api/v1/mobile/attendances`
-- `PATCH /api/v1/mobile/attendances`
+- `GET /api/v1/mobile/attendances`
+- `GET /api/v1/mobile/attendances/:id`
+- `PATCH /api/v1/mobile/attendances/:id`
 
 ### 1. POST /api/v1/web/auth/login
 
@@ -528,7 +530,7 @@ OR
 }
 ```
 
-### 9. PATCH /api/v1/mobile/attendances
+### 10. PATCH /api/v1/mobile/attendances
 
 #### Description
 
@@ -540,11 +542,8 @@ OR
 
 ```json
 {
-  "check_in_time": Date,
+  "check_out_time": Date,
   "attendance_type": String,
-  "latitude": Float,
-  "longitude": Float,
-  "attachment": String,
 }
 ```
 
@@ -554,7 +553,7 @@ _201 - Created_
 
 ```json
 {
-  "message": "${employee.first_name} has been check in"
+  "message": "${employee.first_name} has been check out with status ${attendance_type}"
 }
 ```
 
@@ -567,20 +566,102 @@ _400 - Bad Request_
   "code": 400,
   "message": "wrong attendance type"
 }
-OR
+```
+
+### 11. GET /api/v1/mobile/attendances
+
+#### Description
+
+- Get all the Attendance data based employees login.
+
+#### Request
+
+- Headers
+
+```json
 {
-  "code": 400,
-  "message": "latitude is required"
+  "access_token": string
 }
-OR
+```
+
+#### Response
+
+_200 - OK_
+
+- Body
+
+```json
+[
+ {
+    "id": Integer,
+    "check_in_time": Date,
+    "check_out_time": Date,
+    "attendance_type": ENUM ( ["absent", "attendance", "sick", "permit"],),
+    "attachment":String,
+    "employee_id": Integer,
+    "Employee": {
+      "id": Integer,
+      "first_name": String,
+      "last_name": String,
+      "nik": String,
+      "education": String,
+      "img_profile": String,
+      "birth_date": Date,
+      "email": String,
+      "password": String,
+      "base_salary": Integer,
+      "department_id": Integer,
+      "role_id": Integer
+    }
+  }
+    ...
+]
+```
+
+### 12. GET /api/v1/mobile/attendances/:id
+
+#### Description
+
+- Get Attendance data employees login based on given attendance id.
+
+#### Request
+
+- Headers
+
+```json
 {
-  "code": 400,
-  "message": "longitude is required"
+  "access_token": string
 }
-OR
+```
+
+#### Response
+
+_200 - OK_
+
+- Body
+
+```json
 {
-  "code": 400,
-  "message": "attachment is required"
+  "id": Integer,
+  "check_in_time": Date,
+  "check_out_time": Date,
+  "attendance_type": ENUM ( ["absent", "attendance", "sick", "permit"],),
+  "attachment":String,
+  "employee_id": Integer,
+  "Employee": {
+    "id": Integer,
+    "first_name": String,
+    "last_name": String,
+    "nik": String,
+    "education": String,
+    "img_profile": String,
+    "birth_date": Date,
+    "email": String,
+    "password": String,
+    "base_salary": Integer,
+    "department_id": Integer,
+    "role_id": Integer
+  }
 }
 ```
 

@@ -10,52 +10,65 @@ const Op = require("sequelize");
 
 const createAttendance = async (req, res, next) => {
   const t = await sequelize.transaction();
-
   try {
     const { id: employee_id } = req.employee;
 
     const { check_in_time, attendance_type, latitude, longitude } = req.body;
 
-    const employee = await Employee.findByPk(employee_id);
-    if (!employee) throw { name: "NO_DATA_FOUND" };
+    const today = new Date().getDate();
 
-    if (attendance_type === "absent" || attendance_type === "sick") {
-      if (!req.file) throw { name: "BAD_REQUEST_ATTACHMENT" };
+    const absent = await Attendance.findOne({
+      where: {
+        check_in_time: today,
+        employee_id: employee_id,
+      },
+    });
 
-      const parser = new DatauriParser();
-      const pathImage = parser.format(req.file.originalname, req.file.buffer);
-      const image = await cloudinary.uploader.upload(pathImage.content);
-      const attachment = image.secure_url;
+    if (!absent) {
+      const employee = await Employee.findByPk(employee_id);
+      if (!employee) throw { name: "NO_DATA_FOUND" };
 
-      const payload = {
-        check_in_time,
-        attachment,
-        attendance_type,
-        employee_id: employee.id,
-      };
+      if (attendance_type === "absent" || attendance_type === "sick") {
+        if (!req.file) throw { name: "BAD_REQUEST_ATTACHMENT" };
 
-      const attendance = await Attendance.create(payload, { transaction: t });
+        const parser = new DatauriParser();
+        const pathImage = parser.format(req.file.originalname, req.file.buffer);
+        const image = await cloudinary.uploader.upload(pathImage.content);
+        const attachment = image.secure_url;
 
-      const payloadLocation = {
-        latitude,
-        longitude,
-        type: "in",
-        attendance_id: attendance.id,
-      };
+        const payload = {
+          check_in_time,
+          attachment,
+          attendance_type,
+          employee_id: employee.id,
+        };
 
-      const createLocation = await Location.create(payloadLocation, {
-        transaction: t,
-      });
+        const attendance = await Attendance.create(payload, { transaction: t });
 
-      await t.commit();
+        const payloadLocation = {
+          latitude,
+          longitude,
+          type: "in",
+          attendance_id: attendance.id,
+        };
 
-      res.status(201).json({
-        message: `${employee.first_name} has been check ${createLocation.type}`,
-      });
+        const createLocation = await Location.create(payloadLocation, {
+          transaction: t,
+        });
+
+        await t.commit();
+
+        res.status(201).json({
+          message: `${employee.first_name} has been check ${createLocation.type}`,
+        });
+      } else {
+        throw { name: "BAD_REQUEST_ATTENDANCE_TYPE" };
+      }
     } else {
-      throw { name: "BAD_REQUEST_ATTENDANCE_TYPE" };
+      throw { name: "BAD_REQUEST_CHECK_IN" };
     }
   } catch (err) {
+    console.log(err);
     await t.rollback();
     next(err);
   }
