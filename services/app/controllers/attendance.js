@@ -57,22 +57,23 @@ const createAttendance = async (req, res, next) => {
         await t.commit();
 
         res.status(201).json({
-          message: `${employee.first_name} has been check ${createLocation.type}`,
+          message: `${employee.firstName} has been check ${createLocation.type}`,
         });
       } else {
-        throw { name: "BAD_REQUEST_attendanceType" };
+        throw { name: "BAD_REQUEST_ATTENDANCE_TYPE" };
       }
     } else {
-      throw { name: "BAD_REQUEST_checkIn" };
+      throw { name: "BAD_REQUEST_CHECK_IN" };
     }
   } catch (err) {
-    console.log(err);
     await t.rollback();
     next(err);
   }
 };
 
 const updateStatus = async (req, res, next) => {
+  const t = await sequelize.transaction();
+
   try {
     const { id: employeeId } = req.employee;
     const { checkOutTime, attendanceType, latitude, longitude } = req.body;
@@ -90,16 +91,35 @@ const updateStatus = async (req, res, next) => {
 
     if (!absent) {
       if (attendanceType === "permit") {
-        const attendance = await Attendance.findByPk(id);
+        const attendance = await Attendance.findOne({
+          where: {
+            [Op.and]: [
+              {
+                employeeId: employeeId,
+              },
+              {
+                checkOutTime: null,
+              },
+              {
+                attendanceType: "absent",
+              },
+            ],
+          },
+        });
+
         if (!attendance) throw { name: "NO_DATA_FOUND" };
+        console.log(attendance);
+
         await Attendance.update(
           { checkOutTime, attendanceType },
           {
             where: {
-              id: absent.id,
+              id: attendance.id,
             },
-          }
+          },
+          { transaction: t }
         );
+
         await Location.update(
           {
             latitude,
@@ -108,24 +128,43 @@ const updateStatus = async (req, res, next) => {
           },
           {
             where: {
-              attendanceId: id,
+              attendanceId: attendance.id,
             },
-          }
+          },
+          { transaction: t }
         );
-        const employee = await Employee.findByPk(attendance.employeeId);
-        res.status(201).json({
-          message: `${employee.first_name} has been check out with status ${attendanceType}`,
+        await t.commit();
+
+        res.status(200).json({
+          message: `Success check out with status ${attendanceType}`,
         });
       } else if (attendanceType === "attendance") {
-        const attendance = await Attendance.findByPk(id);
+        const attendance = await Attendance.findOne({
+          where: {
+            [Op.and]: [
+              {
+                employeeId: employeeId,
+              },
+              {
+                checkOutTime: null,
+              },
+              {
+                attendanceType: "absent",
+              },
+            ],
+          },
+        });
+
         if (!attendance) throw { name: "NO_DATA_FOUND" };
+
         await Attendance.update(
           { checkOutTime, attendanceType },
           {
             where: {
-              id,
+              id: attendance.id,
             },
-          }
+          },
+          { transaction: t }
         );
         await Location.update(
           {
@@ -135,21 +174,25 @@ const updateStatus = async (req, res, next) => {
           },
           {
             where: {
-              attendanceId: id,
+              attendanceId: attendance.id,
             },
-          }
+          },
+          { transaction: t }
         );
-        const employee = await Employee.findByPk(attendance.employeeId);
-        res.status(201).json({
-          message: `${employee.first_name} has been check out with status ${attendanceType}`,
+
+        await t.commit();
+
+        res.status(200).json({
+          message: `Success check out with status ${attendanceType}`,
         });
       } else {
-        throw { name: "BAD_REQUEST_attendanceType" };
+        throw { name: "BAD_REQUEST_ATTENDANCE_TYPE" };
       }
     } else {
-      throw { name: "BAD_REQUEST_checkOut" };
+      throw { name: "BAD_REQUEST_CHECK_OUT" };
     }
   } catch (err) {
+    await t.rollback();
     next(err);
   }
 };
