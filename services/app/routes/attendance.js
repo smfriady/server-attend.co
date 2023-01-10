@@ -10,6 +10,6 @@ const { multerUploads } = require("../helpers/multer");
 router.post("/", multerUploads.single("attachment"), createAttendance);
 router.get("/", getAttendances);
 router.get("/:id", getAttendance);
-router.put("/:id", updateStatus);
+router.put("/", updateStatus);
 
 module.exports = router;
