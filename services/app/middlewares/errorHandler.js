@@ -24,6 +24,12 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "BAD_REQUEST_ATTACHMENT") {
     message = "attachment is required";
     code = 400;
+  } else if (err.name === "BAD_REQUEST_CHECK_IN") {
+    message = "you already check in";
+    code = 400;
+  } else if (err.name === "BAD_REQUEST_CHECK_OUT") {
+    message = "you already check out";
+    code = 400;
   } else if (err.name === "NO_DATA_FOUND") {
     message = "no data found";
     code = 404;
