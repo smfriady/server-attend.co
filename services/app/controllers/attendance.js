@@ -237,9 +237,26 @@ const getAttendance = async (req, res, next) => {
     next(err);
   }
 };
+
+const getAttendancesWeb = async (req, res, next) => {
+  try {
+    const option = {
+      attributes: { exclude: ["createdAt", "updatedAt"] },
+      include: {
+        model: Employee,
+      },
+    };
+    const attendance = await Attendance.findAll(option);
+    res.json(attendance);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   createAttendance,
   updateStatus,
   getAttendance,
   getAttendances,
+  getAttendancesWeb,
 };
