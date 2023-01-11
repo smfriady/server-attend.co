@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GET /api/v1/web/departments GET /api/v1/web/departments - 200 - Departments - Success 1`] = `
+{
+  "id": Any<Number>,
+  "name": "Marketing",
+}
+`;
+
+exports[`GET /api/v1/web/departments GET /api/v1/web/departments - 200 - Departments - Success 2`] = `
+{
+  "id": Any<Number>,
+  "name": "Engineering",
+}
+`;
+
+exports[`GET /api/v1/web/departments GET /api/v1/web/departments - 200 - Departments - Success 3`] = `
+{
+  "id": Any<Number>,
+  "name": "Management",
+}
+`;
+
+exports[`GET /api/v1/web/departments GET /api/v1/web/departments - 200 - Departments - Success 4`] = `
+{
+  "id": Any<Number>,
+  "name": "Finance",
+}
+`;
+
+exports[`GET /api/v1/web/departments GET /api/v1/web/departments - 200 - Departments - Success 5`] = `
+{
+  "id": Any<Number>,
+  "name": "HR",
+}
+`;
+
+exports[`GET /api/v1/web/departments GET /api/v1/web/departments - 200 - Departments - Success 6`] = `
+{
+  "id": 1,
+  "name": Any<String>,
+}
+`;
+
+exports[`GET /api/v1/web/departments GET /api/v1/web/departments - 200 - Departments - Success 7`] = `
+{
+  "id": 2,
+  "name": Any<String>,
+}
+`;
+
+exports[`GET /api/v1/web/departments GET /api/v1/web/departments - 200 - Departments - Success 8`] = `
+{
+  "id": 3,
+  "name": Any<String>,
+}
+`;
+
+exports[`GET /api/v1/web/departments GET /api/v1/web/departments - 200 - Departments - Success 9`] = `
+{
+  "id": 4,
+  "name": Any<String>,
+}
+`;
+
+exports[`GET /api/v1/web/departments GET /api/v1/web/departments - 200 - Departments - Success 10`] = `
+{
+  "id": 5,
+  "name": Any<String>,
+}
+`;
