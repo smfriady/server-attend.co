@@ -18,16 +18,13 @@ const generateSalary = async () => {
       const attendances = await Attendance.findAll({
         where: {
           checkInTime: {
-            [Op.between]: [
-              date.startOf("month").toDate(),
-              date.endOf("month").toDate(),
-            ],
+            [Op.between]: [date.startOf("month").toDate(), date.endOf("month").toDate()],
           },
           employeeId: el.id,
         },
       });
       attendances.forEach((el) => {
-        console.log(el.checkInTime);
+        // console.log(el.checkInTime);
         let checkin = dayjs(el.checkInTime);
         let checkout = dayjs(el.checkOutTime);
         hour += checkout.diff(checkin, "hour");
