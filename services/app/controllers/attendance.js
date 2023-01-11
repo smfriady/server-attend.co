@@ -2,12 +2,7 @@ const DatauriParser = require("datauri/parser");
 const dayjs = require("dayjs");
 const { Op } = require("sequelize");
 const cloudinary = require("../middlewares/cloudinary");
-const {
-  Attendance,
-  Location,
-  Employee,
-  sequelize,
-} = require("../models/index");
+const { Attendance, Location, Employee, sequelize } = require("../models/index");
 
 const createAttendance = async (req, res, next) => {
   const t = await sequelize.transaction();
@@ -21,10 +16,7 @@ const createAttendance = async (req, res, next) => {
     const absent = await Attendance.findOne({
       where: {
         checkInTime: {
-          [Op.between]: [
-            checkIn.startOf("date").toDate(),
-            checkIn.endOf("date").toDate(),
-          ],
+          [Op.between]: [checkIn.startOf("date").toDate(), checkIn.endOf("date").toDate()],
         },
         employeeId: employeeId,
       },
@@ -90,10 +82,7 @@ const updateStatus = async (req, res, next) => {
     const absent = await Attendance.findOne({
       where: {
         checkOutTime: {
-          [Op.between]: [
-            checkOut.startOf("date").toDate(),
-            checkOut.endOf("date").toDate(),
-          ],
+          [Op.between]: [checkOut.startOf("date").toDate(), checkOut.endOf("date").toDate()],
         },
         employeeId: employeeId,
       },
@@ -238,14 +227,30 @@ const getAttendance = async (req, res, next) => {
 
 const getAttendancesWeb = async (req, res, next) => {
   try {
+    const { page = "", limit = 30, filter = "attendance" } = req.query;
+
     const option = {
       attributes: { exclude: ["createdAt", "updatedAt"] },
       include: {
         model: Employee,
+        attributes: { exclude: ["password"] },
       },
+      limit,
+      order: [["id", "DESC"]],
     };
-    const attendance = await Attendance.findAll(option);
-    res.json(attendance);
+
+    if (page !== "") {
+      option.offset = Number((page - 1) * limit);
+    }
+
+    if (filter !== "") {
+      option.where = {
+        attendanceType: filter,
+      };
+    }
+
+    const attendance = await Attendance.findAndCountAll(option);
+    res.json({ total: attendance.count, attendances: attendance.rows, page: +page });
   } catch (err) {
     next(err);
   }
