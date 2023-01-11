@@ -10,7 +10,13 @@ const getEmployees = async (req, res, next) => {
 
     const option = {
       attributes: {
-        exclude: ["password", "createdAt", "updatedAt", "departmentId", "roleId"],
+        exclude: [
+          "password",
+          "createdAt",
+          "updatedAt",
+          "departmentId",
+          "roleId",
+        ],
       },
       limit,
       include: [
@@ -51,7 +57,9 @@ const getEmployees = async (req, res, next) => {
 
     const employees = await Employee.findAndCountAll(option);
 
-    res.status(200).json({ total: employees.count, employees: employees.rows, page: +page });
+    res
+      .status(200)
+      .json({ total: employees.count, employees: employees.rows, page: +page });
   } catch (err) {
     next(err);
   }
@@ -87,7 +95,7 @@ const getEmployee = async (req, res, next) => {
 
 const createEmployee = async (req, res, next) => {
   try {
-    if (!req.file) throw { name: "BAD_REQUEST_imgProfile" };
+    if (!req.file) throw { name: "BAD_REQUEST_IMG_PROFILE" };
     const {
       firstName,
       lastName,
