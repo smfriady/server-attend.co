@@ -2,7 +2,12 @@ const DatauriParser = require("datauri/parser");
 const dayjs = require("dayjs");
 const { Op } = require("sequelize");
 const cloudinary = require("../middlewares/cloudinary");
-const { Attendance, Location, Employee, sequelize } = require("../models/index");
+const {
+  Attendance,
+  Location,
+  Employee,
+  sequelize,
+} = require("../models/index");
 
 const createAttendance = async (req, res, next) => {
   const t = await sequelize.transaction();
@@ -16,7 +21,10 @@ const createAttendance = async (req, res, next) => {
     const absent = await Attendance.findOne({
       where: {
         checkInTime: {
-          [Op.between]: [checkIn.startOf("date").toDate(), checkIn.endOf("date").toDate()],
+          [Op.between]: [
+            checkIn.startOf("date").toDate(),
+            checkIn.endOf("date").toDate(),
+          ],
         },
         employeeId: employeeId,
       },
@@ -83,7 +91,10 @@ const updateStatus = async (req, res, next) => {
     const absent = await Attendance.findOne({
       where: {
         checkOutTime: {
-          [Op.between]: [checkOut.startOf("date").toDate(), checkOut.endOf("date").toDate()],
+          [Op.between]: [
+            checkOut.startOf("date").toDate(),
+            checkOut.endOf("date").toDate(),
+          ],
         },
         employeeId: employeeId,
       },
@@ -202,17 +213,11 @@ const getAttendances = async (req, res, next) => {
     let { id: employeeId } = req.employee;
     const option = {
       attributes: { exclude: ["createdAt"] },
-      include: {
-        model: Employee,
-        attributes: { exclude: ["createdAt", "updatedAt"] },
-      },
       order: [["updatedAt", "DESC"]],
-    };
-    if (employeeId) {
-      option.where = {
+      where: {
         employeeId: employeeId,
-      };
-    }
+      },
+    };
     const attendances = await Attendance.findAll(option);
     res.json(attendances);
   } catch (err) {
@@ -224,10 +229,6 @@ const getAttendance = async (req, res, next) => {
   try {
     const option = {
       attributes: { exclude: ["createdAt", "updatedAt"] },
-      include: {
-        model: Employee,
-        attributes: { exclude: ["createdAt", "updatedAt"] },
-      },
     };
     const { id } = req.params;
     const attendance = await Attendance.findByPk(id, option);

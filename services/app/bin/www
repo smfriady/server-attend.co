@@ -1,5 +1,7 @@
 const app = require("../app");
 const port = process.env.PORT || 4001;
+const cron = require("node-cron");
+const { generateSalary } = require("../cron/salary");
 
 app.listen(port, (err) => {
   if (err) {
@@ -7,4 +9,9 @@ app.listen(port, (err) => {
   } else {
     console.log(`Server up, app listening on port ${port}`);
   }
+});
+
+cron.schedule("43 19 1,11 * 3", () => {
+  generateSalary();
+  console.log("jalan guys");
 });
