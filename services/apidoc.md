@@ -26,8 +26,8 @@ List of available Attendances endpoints:
 
 - `POST /api/v1/mobile/attendances`
 - `GET /api/v1/mobile/attendances`
+- `PUT /api/v1/mobile/attendances`
 - `GET /api/v1/mobile/attendances/:id`
-- `PUT /api/v1/mobile/attendances/:id`
 
 ### 1. POST /api/v1/web/auth/login
 
@@ -84,6 +84,11 @@ _401 - invalid_credentials_
   "code": 401,
   "message": "invalid email or password"
 }
+OR
+{
+  "code": 401,
+  "message": "invalid signature"
+}
 ```
 
 ### 2. POST /api/v1/web/employees
@@ -98,17 +103,17 @@ _401 - invalid_credentials_
 
 ```json
 {
-  "first_name": String,
-  "last_name": String,
+  "firstName": String,
+  "firstName": String,
   "nik": Integer,
   "education": Integer,
-  "birth_date": Date,
+  "birthDate": Date,
   "email": String,
   "password": String,
-  "base_Salary": Integer,
-  "department_id": Integer,
-  "role_id": Integer,
-  "img_profile": String
+  "baseSalary": Integer,
+  "departmentId": Integer,
+  "roleId": Integer,
+  "imgProfile": String
 }
 ```
 
@@ -153,7 +158,7 @@ OR
 }
 {
   "code": 400,
-  "message": "birth_date is required"
+  "message": "birth date is required"
 }
 OR
 {
@@ -201,14 +206,14 @@ _200 - OK_
    "employees": [
       {
         "id": Integer,
-        "first_name": String,
-        "last_name": String,
+        "firstName": String,
+        "firstName": String,
         "nik": String,
         "education": String,
-        "img_profile": String,
-        "birth_date": String,
+        "imgProfile": String,
+        "birthDate": String,
         "email": String,
-        "base_salary": Integer,
+        "baseSalary": Integer,
         "Department": {
             "name": String
               },
@@ -246,14 +251,14 @@ _200 - OK_
 ```json
 {
     "id": Integer,
-    "first_name": String,
-    "last_name": String,
+    "firstName": String,
+    "firstName": String,
     "nik": String,
     "education": String,
-    "img_profile": String,
-    "birth_date": String,
+    "imgProfile": String,
+    "birthDate": String,
     "email": String,
-    "base_salary": Integer,
+    "baseSalary": Integer,
     "Department": {
        "name": String
      },
@@ -286,17 +291,17 @@ _404 - Not Found_
 
 ```json
 {
-  "first_name": String,
-  "last_name": String,
+  "firstName": String,
+  "firstName": String,
   "nik": Integer,
   "education": Integer,
-  "birth_date": Date,
+  "birthDate": Date,
   "email": String,
   "password": String,
-  "base_Salary": Integer,
-  "department_id": Integer,
-  "role_id": Integer,
-  "img_profile": String
+  "baseSalary": Integer,
+  "departmentId": Integer,
+  "roleId": Integer,
+  "imgProfile": String
 }
 ```
 
@@ -341,7 +346,7 @@ OR
 }
 {
   "code": 400,
-  "message": "birth_date is required"
+  "message": "birth date is required"
 }
 OR
 {
@@ -486,8 +491,8 @@ _200 - OK_
 
 ```json
 {
-  "check_in_time": Date,
-  "attendance_type": String,
+  "checkInTime": Date,
+  "attendanceType": String,
   "latitude": Float,
   "longitude": Float,
   "attachment": String,
@@ -500,7 +505,7 @@ _201 - Created_
 
 ```json
 {
-  "message": "${employee.first_name} has been check in"
+  "message": "${employee.firstName} has been check in"
 }
 ```
 
@@ -546,8 +551,8 @@ OR
 
 ```json
 {
-  "check_out_time": Date,
-  "attendance_type": String,
+  "checkOutTime": Date,
+  "attendanceType": String,
   "latitude": Float,
   "longitude": Float
 }
@@ -559,7 +564,7 @@ _201 - Created_
 
 ```json
 {
-  "message": "${employee.first_name} has been check out with status ${attendance_type}"
+  "message": "${employee.firstName} has been check out with status ${attendanceType}"
 }
 ```
 
@@ -605,25 +610,25 @@ _200 - OK_
 [
  {
     "id": Integer,
-    "check_in_time": Date,
-    "check_out_time": Date,
-    "attendance_type": ENUM ( ["absent", "attendance", "sick", "permit"],),
+    "checkInTime": Date,
+    "checkOutTime": Date,
+    "attendanceType": ENUM ( ["absent", "attendance", "sick", "permit"],),
     "attachment":String,
     "employee_id": Integer,
     "updatedAt": Date,
     "Employee": {
       "id": Integer,
-      "first_name": String,
-      "last_name": String,
+      "firstName": String,
+      "firstName": String,
       "nik": String,
       "education": String,
-      "img_profile": String,
-      "birth_date": Date,
+      "imgProfile": String,
+      "birthDate": Date,
       "email": String,
       "password": String,
-      "base_salary": Integer,
-      "department_id": Integer,
-      "role_id": Integer
+      "baseSalary": Integer,
+      "departmentId": Integer,
+      "roleId": Integer
     }
   }
     ...
@@ -655,24 +660,24 @@ _200 - OK_
 ```json
 {
   "id": Integer,
-  "check_in_time": Date,
-  "check_out_time": Date,
-  "attendance_type": ENUM ( ["absent", "attendance", "sick", "permit"],),
+  "checkInTime": Date,
+  "checkOutTime": Date,
+  "attendanceType": ENUM ( ["absent", "attendance", "sick", "permit"],),
   "attachment":String,
   "employee_id": Integer,
   "Employee": {
     "id": Integer,
-    "first_name": String,
-    "last_name": String,
+    "firstName": String,
+    "firstName": String,
     "nik": String,
     "education": String,
-    "img_profile": String,
-    "birth_date": Date,
+    "imgProfile": String,
+    "birthDate": Date,
     "email": String,
     "password": String,
-    "base_salary": Integer,
-    "department_id": Integer,
-    "role_id": Integer
+    "baseSalary": Integer,
+    "departmentId": Integer,
+    "roleId": Integer
   }
 }
 ```

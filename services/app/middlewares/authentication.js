@@ -5,7 +5,10 @@ async function authenticationEmployee(req, _res, next) {
   let token;
 
   try {
-    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
+    ) {
       token = req.headers.authorization.split(" ")[1];
     }
     if (!token) throw { name: "UNAUTHORIZED" };
@@ -16,7 +19,7 @@ async function authenticationEmployee(req, _res, next) {
     const employee = await Employee.findByPk(id);
 
     if (employee) {
-      req.employee = { id: employee.id, role: employee.role_id };
+      req.employee = { id: employee.id, role: employee.roleId };
       next();
     } else {
       throw { name: "UNAUTHORIZED" };
