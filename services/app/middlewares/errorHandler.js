@@ -42,6 +42,9 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "UNAUTHORIZED") {
     message = "not authorized, no user login";
     code = 401;
+  } else if (err.name === "JsonWebTokenError") {
+    message = "invalid signature";
+    code = 401;
   } else if (err.name === "INVALID_CREDENTIAL") {
     message = "invalid email or password";
     code = 401;
