@@ -22,7 +22,8 @@ router.use(`${API_WEB}/auth`, authRouter);
 router.use(`${API_WEB}/employees`, employeeRouter);
 router.use(`${API_WEB}/departments`, departmentRouter);
 router.use(`${API_WEB}/roles`, roleRouter);
-router.use(`${API_WEB}/salaries`, authenticationEmployee, salaryRouter);
+router.use(`${API_WEB}/attendances`, attendanceRouter);
+router.use(`${API_WEB}/salaries`, salaryRouter);
 
 router.use(`${API_MOBILE}/auth`, authRouter);
 router.use(`${API_MOBILE}/salaries`, authenticationEmployee, salaryRouter);

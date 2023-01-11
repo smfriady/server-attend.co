@@ -17,4 +17,20 @@ const getSalaries = async (req, res, next) => {
   }
 };
 
-module.exports = { getSalaries };
+const getSalariesWeb = async (req, res, next) => {
+  try {
+    const option = {
+      attributes: { exclude: ["createdAt"] },
+      order: [["id", "DESC"]],
+      include: {
+        model: Employee,
+      },
+    };
+    const Salaries = await Salary.findAll(option);
+    res.json(Salaries);
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { getSalaries, getSalariesWeb };
