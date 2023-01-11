@@ -8,11 +8,29 @@ const request = require("supertest");
 const { Attendance, Location, Employee } = require("../models");
 const { signJwt } = require("../helpers/jwt");
 const tokenCheckIn =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjczNDA1MzgyLCJleHAiOjE2NzM0OTE3ODJ9.Zu-T1MpSl9bpjoXhrRlvr4bTUHFdoO6mazEA5RlLjr4";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzYsImlhdCI6MTY3MzQ1NzE0NH0.aY5yYUa9AqJR_jfkMJUNZaV_qEjzSTfImzvyCHt4Glo";
 const tokenFree =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjczNDA1NzYzLCJleHAiOjE2NzM0OTIxNjN9.3nO7LfcFMVdmFEhnN_eobm-bHBjREZA7PEctKK7GHEU";
 const tokenCheckOut =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzYsImlhdCI6MTY3MzQ0MjI0MH0.vfsZEdtemFLSRgVYW_J4MsRoxvUcFQc9vqmYy8MUZiQ";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzcsImlhdCI6MTY3MzQ1NzY5NX0.zntKo4tXGnFtNJHuOrK2jwzpd9H5DalLtaQhA2wW79c";
+
+beforeAll(async () => {
+  const employee = {
+    firstName: "rahmat",
+    lastName: "rahmat",
+    nik: "67821637812637861",
+    education: "S1 - Hukum",
+    birthDate: "1997-06-06",
+    email: "rahmatrahmat@gmail.com",
+    password: "123456",
+    baseSalary: 10000000,
+    departmentId: 1,
+    roleId: 2,
+    imgProfile: "image.png",
+  };
+  const user = await Employee.create(employee);
+  const token = signJwt({ id: user.id }, process.env.JWT_SECRET_EMPLOYEE);
+});
 
 describe("POST /api/v1/mobile/attendances", () => {
   const dateNow = new Date().toISOString();
@@ -133,11 +151,33 @@ describe("GET  /api/v1/mobile/attendances", () => {
     expect(res.body).toBeInstanceOf(Array);
   });
 
+  test("GET /api/v1/mobile/attendances - 200 - Attendance - Success", async () => {
+    const res = await request(app)
+      .get("/api/v1/mobile/attendances/web")
+      .set("Authorization", `Bearer ${tokenCheckIn}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body).toBeInstanceOf(Array);
+  });
+
   test("GET  /api/v1/mobile/attendances - 500 - Attendance - Error findAll", async () => {
     jest.spyOn(Attendance, "findAll").mockRejectedValue("Error");
 
     const res = await request(app)
       .get("/api/v1/mobile/attendances")
+      .set("Authorization", `Bearer ${tokenCheckIn}`);
+
+    expect(res.status).toBe(500);
+    expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("code", 500);
+    expect(res.body).toHaveProperty("message", "internal server error");
+  });
+
+  test("GET  /api/v1/mobile/attendances - 500 - Attendance - Error findAll", async () => {
+    jest.spyOn(Attendance, "findAll").mockRejectedValue("Error");
+
+    const res = await request(app)
+      .get("/api/v1/mobile/attendances/web")
       .set("Authorization", `Bearer ${tokenCheckIn}`);
 
     expect(res.status).toBe(500);
@@ -178,14 +218,18 @@ describe("GET  /api/v1/mobile/attendances", () => {
 
 describe("PUT /api/v1/mobile/attendances", () => {
   const dateNow = new Date().toISOString();
+  const token2 =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzcsImlhdCI6MTY3MzQ1OTY3Mn0.eR8-K4qbvAVniT1hiU-vtrTtnzBktl5Rls8AYUjQF8k";
+  const token3 =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzgsImlhdCI6MTY3MzQ1OTc1N30.FBc_R9En3dDLKI33RPGxlnG0MTeQRofnDRP4P6hSVdI";
   beforeAll(async () => {
     const employee2 = {
-      firstName: "rahmat",
-      lastName: "rahmat",
+      firstName: "sony",
+      lastName: "sony",
       nik: "67821637812637861",
       education: "S1 - Hukum",
       birthDate: "1997-06-06",
-      email: "rahmatrahmat@gmail.com",
+      email: "sony@gmail.com",
       password: "123456",
       baseSalary: 10000000,
       departmentId: 1,
@@ -207,13 +251,50 @@ describe("PUT /api/v1/mobile/attendances", () => {
       type: "in",
       attendanceId: attendance2.id,
     };
+    const createLocation2 = await Location.create(inputLocation2);
 
     const token2 = signJwt(
-      { id: attendance2.id },
+      { id: attendance2.employeeId },
       process.env.JWT_SECRET_EMPLOYEE
     );
-    console.log(token2, "<<<< ke dua");
 
+    // * employee3
+    const employee3 = {
+      firstName: "janu",
+      lastName: "janu",
+      nik: "67821637812637861",
+      education: "S1 - Hukum",
+      birthDate: "1997-06-06",
+      email: "janu@gmail.com",
+      password: "123456",
+      baseSalary: 10000000,
+      departmentId: 1,
+      roleId: 2,
+      imgProfile: "image.png",
+    };
+    const user3 = await Employee.create(employee3);
+    const inputAttendance3 = {
+      checkInTime: dateNow,
+      attachment: "image.jpg",
+      attendanceType: "absent",
+      employeeId: user3.id,
+    };
+    const attendance3 = await Attendance.create(inputAttendance3);
+    const inputLocation3 = {
+      latitude: parseFloat(-1.123),
+      longitude: parseFloat(1.123123),
+      type: "in",
+      attendanceId: attendance3.id,
+    };
+
+    await Location.create(inputLocation3);
+
+    const token3 = signJwt(
+      { id: attendance3.employeeId },
+      process.env.JWT_SECRET_EMPLOYEE
+    );
+
+    // * employee1
     const employee1 = {
       firstName: "hidayat",
       lastName: "nurmusa",
@@ -265,10 +346,9 @@ describe("PUT /api/v1/mobile/attendances", () => {
     );
     const employee = await Attendance.findOne({ where: { id: attendance.id } });
     const token = signJwt(
-      { id: attendance.id },
+      { id: attendance.employeeId },
       process.env.JWT_SECRET_EMPLOYEE
     );
-    console.log(token);
   });
 
   test("PUT /api/v1/mobile/attendances - 200 - Success", async () => {
@@ -278,12 +358,11 @@ describe("PUT /api/v1/mobile/attendances", () => {
       latitude: parseFloat(-1.123),
       longitude: parseFloat(1.123123),
     };
-    const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzYsImlhdCI6MTY3MzQyMjk2MH0.rKIrXzWQ-2iJvVeAU9Q9jkjIBeyFzx2XcCNq17XDMBY";
+
     const res = await request(app)
       .put("/api/v1/mobile/attendances")
       .send(inputAttendance)
-      .set("Authorization", `Bearer ${token}`);
+      .set("Authorization", `Bearer ${token2}`);
 
     expect(res.status).toBe(200);
     expect(res.body).toBeInstanceOf(Object);
@@ -301,7 +380,7 @@ describe("PUT /api/v1/mobile/attendances", () => {
     const res = await request(app)
       .put("/api/v1/mobile/attendances")
       .send(inputPermit)
-      .set("Authorization", `Bearer ${tokenCheckIn}`);
+      .set("Authorization", `Bearer ${token3}`);
 
     expect(res.status).toBe(200);
     expect(res.body).toBeInstanceOf(Object);

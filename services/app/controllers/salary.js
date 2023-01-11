@@ -17,7 +17,7 @@ const getSalaries = async (req, res, next) => {
   }
 };
 
-const getSalariesWeb = async (req, res, next) => {
+const getSalariesWeb = async (_req, res, next) => {
   try {
     const option = {
       attributes: { exclude: ["createdAt"] },

@@ -20,36 +20,12 @@ afterAll(async () => {
   });
 });
 
-// beforeAll(async () => {
-//   const employees = dataEmployee.map((el) => {
-//     el.createdAt = el.updatedAt = new Date();
-//     el.password = hashPassword(el.password);
-//     return el;
-//   });
-//   try {
-//     await Role.bulkCreate(dataRole);
-//     await Department.bulkCreate(dataDepartment);
-//     await Employee.bulkCreate(employees);
-//   } catch (err) {
-//     console.log(err, "<dari test");
-//   }
-// });
-
-// afterAll(async () => {
-//   await queryInterface.bulkDelete("Employees", null, {
-//     restartIdentity: true,
-//     truncate: true,
-//     cascade: true,
-//   });
-// });
-
 describe("GET /api/v1/web/employees", () => {
   test("GET /api/v1/web/employees - 200 - Employees - Success", async () => {
     const res = await request(app).get("/api/v1/web/employees");
 
     expect(res.status).toBe(200);
     expect(res.body).toBeInstanceOf(Object);
-
     expect(res.body).toHaveProperty("total", expect.any(Number));
     expect(res.body).toHaveProperty("employees", expect.any(Array));
     expect(res.body).toHaveProperty("page", expect.any(Number));
@@ -60,7 +36,6 @@ describe("GET /api/v1/web/employees", () => {
 
     expect(res.status).toBe(200);
     expect(res.body).toBeInstanceOf(Object);
-
     expect(res.body).toHaveProperty("total", expect.any(Number));
     expect(res.body).toHaveProperty("employees", expect.any(Array));
     expect(res.body).toHaveProperty("page", expect.any(Number));
@@ -73,7 +48,6 @@ describe("GET /api/v1/web/employees", () => {
 
     expect(res.status).toBe(200);
     expect(res.body).toBeInstanceOf(Object);
-
     expect(res.body).toHaveProperty("total", expect.any(Number));
     expect(res.body).toHaveProperty("employees", expect.any(Array));
     expect(res.body).toHaveProperty("page", expect.any(Number));
@@ -84,7 +58,6 @@ describe("GET /api/v1/web/employees", () => {
 
     expect(res.status).toBe(200);
     expect(res.body).toBeInstanceOf(Object);
-
     expect(res.body).toHaveProperty("total", expect.any(Number));
     expect(res.body).toHaveProperty("employees", expect.any(Array));
     expect(res.body).toHaveProperty("page", expect.any(Number));
@@ -95,7 +68,6 @@ describe("GET /api/v1/web/employees", () => {
 
     expect(res.status).toBe(200);
     expect(res.body).toBeInstanceOf(Object);
-
     expect(res.body).toHaveProperty("total", expect.any(Number));
     expect(res.body).toHaveProperty("employees", expect.any(Array));
     expect(res.body).toHaveProperty("page", expect.any(Number));
@@ -117,7 +89,6 @@ describe("GET /api/v1/web/employees", () => {
 
     expect(res.status).toBe(200);
     expect(res.body).toBeInstanceOf(Object);
-
     expect(res.body).toHaveProperty("id", expect.any(Number));
     expect(res.body).toHaveProperty("firstName", expect.any(String));
     expect(res.body).toHaveProperty("lastName", expect.any(String));
@@ -137,7 +108,6 @@ describe("GET /api/v1/web/employees", () => {
 
     expect(res.status).toBe(404);
     expect(res.body).toBeInstanceOf(Object);
-
     expect(res.body).toHaveProperty("code", 404);
     expect(res.body).toHaveProperty("message", "no data found");
   });
@@ -150,6 +120,7 @@ describe("POST /api/v1/web/employees", () => {
       .mockImplementationOnce(() =>
         Promise.resolve({ secure_url: "image.jpg" })
       );
+
     const res = await request(app)
       .post("/api/v1/web/employees")
       .field("firstName", "janu")
@@ -166,7 +137,6 @@ describe("POST /api/v1/web/employees", () => {
 
     expect(res.status).toBe(201);
     expect(res.body).toEqual(expect.any(Object));
-
     expect(res.body).toHaveProperty(
       "message",
       "Employee with email admin1@gmail.com created successfully"
@@ -196,7 +166,6 @@ describe("POST /api/v1/web/employees", () => {
 
     expect(res.status).toBe(400);
     expect(res.body).toEqual(expect.any(Object));
-
     expect(res.body).toHaveProperty("message", "image profile is required");
   });
 
@@ -221,7 +190,6 @@ describe("POST /api/v1/web/employees", () => {
 
     expect(res.status).toBe(400);
     expect(res.body).toEqual(expect.any(Object));
-
     expect(res.body).toHaveProperty("message", "upload error");
   });
 
@@ -248,7 +216,6 @@ describe("POST /api/v1/web/employees", () => {
 
     expect(res.status).toBe(400);
     expect(res.body).toEqual(expect.any(Object));
-
     expect(res.body).toHaveProperty("message", "email must be unique");
   });
 
@@ -275,7 +242,6 @@ describe("POST /api/v1/web/employees", () => {
 
     expect(res.status).toBe(400);
     expect(res.body).toEqual(expect.any(Object));
-
     expect(res.body).toHaveProperty("message", "image profile is required");
   });
 });
@@ -285,6 +251,7 @@ describe("PUT /api/v1/web/employees/:id", () => {
     jest
       .spyOn(Cloudinary, "upload")
       .mockResolvedValue({ secure_url: "image.jpg" });
+
     const res = await request(app)
       .put("/api/v1/web/employees/1")
       .field("firstName", "ghzy")
@@ -300,7 +267,6 @@ describe("PUT /api/v1/web/employees/:id", () => {
 
     expect(res.status).toBe(200);
     expect(res.body).toEqual(expect.any(Object));
-
     expect(res.body).toHaveProperty(
       "message",
       "Employee with email admin23@gmail.com updated successfully"
@@ -322,7 +288,6 @@ describe("PUT /api/v1/web/employees/:id", () => {
 
     expect(res.status).toBe(200);
     expect(res.body).toEqual(expect.any(Object));
-
     expect(res.body).toHaveProperty(
       "message",
       "Employee with email admin80@gmail.com updated successfully"
@@ -333,6 +298,7 @@ describe("PUT /api/v1/web/employees/:id", () => {
     jest
       .spyOn(Cloudinary, "upload")
       .mockResolvedValue({ secure_url: "image.jpg" });
+
     const res = await request(app)
       .put("/api/v1/web/employees/300")
       .field("firstName", "ghzy")
@@ -348,7 +314,6 @@ describe("PUT /api/v1/web/employees/:id", () => {
 
     expect(res.status).toBe(404);
     expect(res.body).toEqual(expect.any(Object));
-
     expect(res.body).toHaveProperty("message", "no data found");
   });
 });
@@ -359,7 +324,6 @@ describe("DELETE /api/v1/web/employees/:id", () => {
 
     expect(res.status).toBe(200);
     expect(res.body).toBeInstanceOf(Object);
-
     expect(res.body).toHaveProperty(
       "message",
       "Employee with email spettman1@telegraph.co.uk deleted successfully"
@@ -371,7 +335,6 @@ describe("DELETE /api/v1/web/employees/:id", () => {
 
     expect(res.status).toBe(404);
     expect(res.body).toBeInstanceOf(Object);
-
     expect(res.body).toHaveProperty("code", 404);
     expect(res.body).toHaveProperty("message", "no data found");
   });

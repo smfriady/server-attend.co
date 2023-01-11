@@ -31,6 +31,5 @@ describe("GET /api/v1/web/departments", () => {
     expect(res.body).toBeInstanceOf(Object);
     expect(res.body).toHaveProperty("code", 500);
     expect(res.body).toHaveProperty("message", "internal server error");
-    // expect(res.body.name).toBe("Error bos"); // harus di handle balikan message errornya
   });
 });
