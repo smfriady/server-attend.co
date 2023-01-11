@@ -24,10 +24,16 @@ List of available Roles endpoints:
 
 List of available Attendances endpoints:
 
+- `GET /api/v1/web/attendances/web`
 - `POST /api/v1/mobile/attendances`
 - `GET /api/v1/mobile/attendances`
 - `PUT /api/v1/mobile/attendances`
 - `GET /api/v1/mobile/attendances/:id`
+
+List of available Salaries endpoints:
+
+- `GET /api/v1/web/salaries/web`
+- `GET /api/v1/mobile/salaries`
 
 ### 1. POST /api/v1/web/auth/login
 
@@ -479,7 +485,60 @@ _200 - OK_
 ]
 ```
 
-### 9. POST /api/v1/mobile/attendances
+### 9. GET /api/v1/web/attendances/web
+
+#### Description
+
+- Get all the Attendance data include Employee data.
+
+#### Request
+
+- Headers
+
+```json
+{
+  "access_token": string
+}
+```
+
+#### Response
+
+_200 - OK_
+
+- Body
+
+```json
+[
+ {
+    "id": Integer,
+    "checkInTime": Date,
+    "checkOutTime": Date,
+    "attendanceType": ENUM ( ["absent", "attendance", "sick", "permit"],),
+    "attachment":String,
+    "employee_id": Integer,
+    "updatedAt": Date,
+    "Employee": {
+        "id": Integer,
+        "firstName": String,
+        "lastName": String,
+        "nik": String,
+        "education": String,
+        "imgProfile": String,
+        "birthDate": Date,
+        "email": String,
+        "password": String,
+        "baseSalary": Integer,
+        "departmentId": Integer,
+        "roleId": Integer,
+        "createdAt": Date,
+        "updatedAt": Date
+    }
+  }
+    ...
+]
+```
+
+### 10. POST /api/v1/mobile/attendances
 
 #### Description
 
@@ -539,7 +598,7 @@ OR
 }
 ```
 
-### 10. PUT /api/v1/mobile/attendances
+### 11. PUT /api/v1/mobile/attendances
 
 #### Description
 
@@ -584,7 +643,7 @@ OR
 }
 ```
 
-### 11. GET /api/v1/mobile/attendances
+### 12. GET /api/v1/mobile/attendances
 
 #### Description
 
@@ -616,26 +675,12 @@ _200 - OK_
     "attachment":String,
     "employee_id": Integer,
     "updatedAt": Date,
-    "Employee": {
-      "id": Integer,
-      "firstName": String,
-      "firstName": String,
-      "nik": String,
-      "education": String,
-      "imgProfile": String,
-      "birthDate": Date,
-      "email": String,
-      "password": String,
-      "baseSalary": Integer,
-      "departmentId": Integer,
-      "roleId": Integer
-    }
   }
     ...
 ]
 ```
 
-### 12. GET /api/v1/mobile/attendances/:id
+### 13. GET /api/v1/mobile/attendances/:id
 
 #### Description
 
@@ -665,21 +710,96 @@ _200 - OK_
   "attendanceType": ENUM ( ["absent", "attendance", "sick", "permit"],),
   "attachment":String,
   "employee_id": Integer,
-  "Employee": {
-    "id": Integer,
-    "firstName": String,
-    "firstName": String,
-    "nik": String,
-    "education": String,
-    "imgProfile": String,
-    "birthDate": Date,
-    "email": String,
-    "password": String,
-    "baseSalary": Integer,
-    "departmentId": Integer,
-    "roleId": Integer
-  }
 }
+```
+
+### 14. GET /api/v1/web/salaries
+
+#### Description
+
+- Get all the Salary data based employees login.
+
+#### Request
+
+- Headers
+
+```json
+{
+  "access_token": string
+}
+```
+
+#### Response
+
+_200 - OK_
+
+- Body
+
+```json
+[
+ {
+   "id": Integer,
+   "amount": Integer,
+   "paymentDate": Date,
+   "periodeSalary": Date,
+   "employeeId": Integer,
+   "updatedAt": Date
+
+  }
+    ...
+]
+```
+
+### 13. GET /api/v1/mobile/salaries
+
+#### Description
+
+- Get all the Salary data based employees login.
+
+#### Request
+
+- Headers
+
+```json
+{
+  "access_token": string
+}
+```
+
+#### Response
+
+_200 - OK_
+
+- Body
+
+```json
+[
+ {
+   "id": Integer,
+   "amount": Integer,
+   "paymentDate": Date,
+   "periodeSalary": Date,
+   "employeeId": Integer,
+   "updatedAt": Date,
+   "Employee": {
+        "id": Integer,
+        "firstName": String,
+        "lastName": String,
+        "nik": String,
+        "education": String,
+        "imgProfile": String,
+        "birthDate": Date,
+        "email": String,
+        "password": String,
+        "baseSalary": Integer,
+        "departmentId": Integer,
+        "roleId": Integer,
+        "createdAt": Date,
+        "updatedAt": Date
+    }
+  }
+    ...
+]
 ```
 
 ## Global Error
