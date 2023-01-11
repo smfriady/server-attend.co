@@ -8,15 +8,15 @@ const request = require("supertest");
 
 describe("GET /api/v1/web/departments", () => {
   test("GET /api/v1/web/departments - 200 - Departments - Success", async () => {
-    const response = await request(app).get("/api/v1/web/departments");
+    const res = await request(app).get("/api/v1/web/departments");
 
-    expect(response.status).toBe(200);
-    expect(response.body).toBeInstanceOf(Array);
+    expect(res.status).toBe(200);
+    expect(res.body).toBeInstanceOf(Array);
 
-    response.body.forEach((employee) => {
+    res.body.forEach((employee) => {
       expect(employee).toMatchSnapshot({ id: expect.any(Number) });
     });
-    response.body.forEach((employee) => {
+    res.body.forEach((employee) => {
       expect(employee).toMatchSnapshot({ name: expect.any(String) });
     });
   });
@@ -25,9 +25,12 @@ describe("GET /api/v1/web/departments", () => {
     const expectedError = "Error bos";
     jest.spyOn(Department, "findAll").mockRejectedValue(expectedError);
 
-    const response = await request(app).get("/api/v1/web/departments");
+    const res = await request(app).get("/api/v1/web/departments");
 
-    expect(response.status).toBe(500);
-    // expect(response.body.name).toBe("Error bos"); // harus di handle balikan message errornya
+    expect(res.status).toBe(500);
+    expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("code", 500);
+    expect(res.body).toHaveProperty("message", "internal server error");
+    // expect(res.body.name).toBe("Error bos"); // harus di handle balikan message errornya
   });
 });

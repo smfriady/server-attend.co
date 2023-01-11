@@ -31,7 +31,7 @@ const createAttendance = async (req, res, next) => {
     });
 
     if (!absent) {
-      const employee = await Employee.findByPk(employeeId);
+      const employee = await Employee.findOne({ where: { id: employeeId } });
       if (!employee) throw { name: "NO_DATA_FOUND" };
 
       if (attendanceType === "absent" || attendanceType === "sick") {
@@ -41,7 +41,6 @@ const createAttendance = async (req, res, next) => {
         const pathImage = parser.format(req.file.originalname, req.file.buffer);
         const image = await cloudinary.uploader.upload(pathImage.content);
         const attachment = image.secure_url;
-
         const payload = {
           checkInTime,
           attachment,
@@ -55,7 +54,7 @@ const createAttendance = async (req, res, next) => {
           latitude,
           longitude,
           type: "in",
-          attendance_id: attendance.id,
+          attendanceId: attendance.id,
         };
 
         const createLocation = await Location.create(payloadLocation, {
@@ -119,7 +118,6 @@ const updateStatus = async (req, res, next) => {
         });
 
         if (!attendance) throw { name: "NO_DATA_FOUND" };
-        console.log(attendance);
 
         await Attendance.update(
           { checkOutTime, attendanceType },

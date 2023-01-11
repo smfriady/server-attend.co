@@ -2,15 +2,10 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 
-// const dataEmployee = require("../data/profiles.json");
-// const dataDepartment = require("../data/department.json");
-// const dataRole = require("../data/roles.json");
-const Cloudinary = require("../helpers/cloudinary");
-
 const app = require("../app");
 const request = require("supertest");
+const Cloudinary = require("../helpers/cloudinary"); // dari helpers
 const cloudinary = require("cloudinary").v2;
-// const { hashPassword } = require("../middlewares/bycrypt");
 const { Employee } = require("../models");
 
 beforeEach(() => {
@@ -50,62 +45,60 @@ afterAll(async () => {
 
 describe("GET /api/v1/web/employees", () => {
   test("GET /api/v1/web/employees - 200 - Employees - Success", async () => {
-    const response = await request(app).get("/api/v1/web/employees");
+    const res = await request(app).get("/api/v1/web/employees");
 
-    expect(response.status).toBe(200);
-    expect(response.body).toBeInstanceOf(Object);
+    expect(res.status).toBe(200);
+    expect(res.body).toBeInstanceOf(Object);
 
-    expect(response.body).toHaveProperty("total", expect.any(Number));
-    expect(response.body).toHaveProperty("employees", expect.any(Array));
-    expect(response.body).toHaveProperty("page", expect.any(Number));
+    expect(res.body).toHaveProperty("total", expect.any(Number));
+    expect(res.body).toHaveProperty("employees", expect.any(Array));
+    expect(res.body).toHaveProperty("page", expect.any(Number));
   });
 
   test("GET /api/v1/web/employees?page=1 - 200 - Employees - Success", async () => {
-    const response = await request(app).get("/api/v1/web/employees?page=1");
+    const res = await request(app).get("/api/v1/web/employees?page=1");
 
-    expect(response.status).toBe(200);
-    expect(response.body).toBeInstanceOf(Object);
+    expect(res.status).toBe(200);
+    expect(res.body).toBeInstanceOf(Object);
 
-    expect(response.body).toHaveProperty("total", expect.any(Number));
-    expect(response.body).toHaveProperty("employees", expect.any(Array));
-    expect(response.body).toHaveProperty("page", expect.any(Number));
+    expect(res.body).toHaveProperty("total", expect.any(Number));
+    expect(res.body).toHaveProperty("employees", expect.any(Array));
+    expect(res.body).toHaveProperty("page", expect.any(Number));
   });
 
   test("GET /api/v1/web/employees?firstName=claire - 200 - Employees - Success", async () => {
-    const response = await request(app).get(
+    const res = await request(app).get(
       "/api/v1/web/employees?firstName=claire"
     );
 
-    expect(response.status).toBe(200);
-    expect(response.body).toBeInstanceOf(Object);
+    expect(res.status).toBe(200);
+    expect(res.body).toBeInstanceOf(Object);
 
-    expect(response.body).toHaveProperty("total", expect.any(Number));
-    expect(response.body).toHaveProperty("employees", expect.any(Array));
-    expect(response.body).toHaveProperty("page", expect.any(Number));
+    expect(res.body).toHaveProperty("total", expect.any(Number));
+    expect(res.body).toHaveProperty("employees", expect.any(Array));
+    expect(res.body).toHaveProperty("page", expect.any(Number));
   });
 
   test("GET /api/v1/web/employees?first_name= - 200 - Employees - Success", async () => {
-    const response = await request(app).get(
-      "/api/v1/web/employees?first_name="
-    );
+    const res = await request(app).get("/api/v1/web/employees?first_name=");
 
-    expect(response.status).toBe(200);
-    expect(response.body).toBeInstanceOf(Object);
+    expect(res.status).toBe(200);
+    expect(res.body).toBeInstanceOf(Object);
 
-    expect(response.body).toHaveProperty("total", expect.any(Number));
-    expect(response.body).toHaveProperty("employees", expect.any(Array));
-    expect(response.body).toHaveProperty("page", expect.any(Number));
+    expect(res.body).toHaveProperty("total", expect.any(Number));
+    expect(res.body).toHaveProperty("employees", expect.any(Array));
+    expect(res.body).toHaveProperty("page", expect.any(Number));
   });
 
   test("GET /api/v1/web/employees?filter=2 - 200 - Employees - Success", async () => {
-    const response = await request(app).get("/api/v1/web/employees?filter=2");
+    const res = await request(app).get("/api/v1/web/employees?filter=2");
 
-    expect(response.status).toBe(200);
-    expect(response.body).toBeInstanceOf(Object);
+    expect(res.status).toBe(200);
+    expect(res.body).toBeInstanceOf(Object);
 
-    expect(response.body).toHaveProperty("total", expect.any(Number));
-    expect(response.body).toHaveProperty("employees", expect.any(Array));
-    expect(response.body).toHaveProperty("page", expect.any(Number));
+    expect(res.body).toHaveProperty("total", expect.any(Number));
+    expect(res.body).toHaveProperty("employees", expect.any(Array));
+    expect(res.body).toHaveProperty("page", expect.any(Number));
   });
 
   test("GET /api/v1/web/employees - 500 - Employees - Fail", async () => {
@@ -120,22 +113,22 @@ describe("GET /api/v1/web/employees", () => {
   });
 
   test("GET /api/v1/web/employees/:id - 200 - Employees - Success", async () => {
-    const response = await request(app).get("/api/v1/web/employees/1");
+    const res = await request(app).get("/api/v1/web/employees/1");
 
-    expect(response.status).toBe(200);
-    expect(response.body).toBeInstanceOf(Object);
+    expect(res.status).toBe(200);
+    expect(res.body).toBeInstanceOf(Object);
 
-    expect(response.body).toHaveProperty("id", expect.any(Number));
-    expect(response.body).toHaveProperty("first_name", expect.any(String));
-    expect(response.body).toHaveProperty("last_name", expect.any(String));
-    expect(response.body).toHaveProperty("nik", expect.any(String));
-    expect(response.body).toHaveProperty("education", expect.any(String));
-    expect(response.body).toHaveProperty("img_profile", expect.any(String));
-    expect(response.body).toHaveProperty("birth_date", expect.any(String));
-    expect(response.body).toHaveProperty("email", expect.any(String));
-    expect(response.body).toHaveProperty("base_salary", expect.any(Number));
-    expect(response.body).toHaveProperty("department_id", expect.any(Number));
-    expect(response.body).toHaveProperty("role_id", expect.any(Number));
+    expect(res.body).toHaveProperty("id", expect.any(Number));
+    expect(res.body).toHaveProperty("firstName", expect.any(String));
+    expect(res.body).toHaveProperty("lastName", expect.any(String));
+    expect(res.body).toHaveProperty("nik", expect.any(String));
+    expect(res.body).toHaveProperty("education", expect.any(String));
+    expect(res.body).toHaveProperty("imgProfile", expect.any(String));
+    expect(res.body).toHaveProperty("birthDate", expect.any(String));
+    expect(res.body).toHaveProperty("email", expect.any(String));
+    expect(res.body).toHaveProperty("baseSalary", expect.any(Number));
+    expect(res.body).toHaveProperty("departmentId", expect.any(Number));
+    expect(res.body).toHaveProperty("roleId", expect.any(Number));
     // property Departments & Role belum di handle
   });
 
@@ -157,24 +150,24 @@ describe("POST /api/v1/web/employees", () => {
       .mockImplementationOnce(() =>
         Promise.resolve({ secure_url: "image.jpg" })
       );
-    const response = await request(app)
+    const res = await request(app)
       .post("/api/v1/web/employees")
-      .field("first_name", "janu")
-      .field("last_name", "hakim")
+      .field("firstName", "janu")
+      .field("lastName", "hakim")
       .field("nik", "02546589845645623")
       .field("education", "sma")
-      .attach("img_profile", "./__test__/test3.png")
-      .field("birth_date", "1997-01-25")
+      .attach("imgProfile", "./__test__/test3.png")
+      .field("birthDate", "1997-01-25")
       .field("email", "admin1@gmail.com")
       .field("password", "123456")
-      .field("base_salary", 5000000)
-      .field("department_id", 2)
-      .field("role_id", 10);
+      .field("baseSalary", 5000000)
+      .field("departmentId", 2)
+      .field("roleId", 10);
 
-    expect(response.status).toBe(201);
-    expect(response.body).toEqual(expect.any(Object));
+    expect(res.status).toBe(201);
+    expect(res.body).toEqual(expect.any(Object));
 
-    expect(response.body).toHaveProperty(
+    expect(res.body).toHaveProperty(
       "message",
       "Employee with email admin1@gmail.com created successfully"
     );
@@ -187,27 +180,24 @@ describe("POST /api/v1/web/employees", () => {
         Promise.resolve({ secure_url: "image.jpg" })
       );
 
-    const response = await request(app)
+    const res = await request(app)
       .post("/api/v1/web/employees")
-      .field("first_name", "janu")
-      .field("last_name", "hakim")
+      .field("firstName", "janu")
+      .field("lastName", "hakim")
       .field("nik", "02546589845645623")
       .field("education", "sma")
-      .attach("img_profile", null)
-      .field("birth_date", "1997-01-25")
+      .attach("imgProfile", null)
+      .field("birthDate", "1997-01-25")
       .field("email", "admin1@gmail.com")
       .field("password", "123456")
-      .field("base_salary", 5000000)
-      .field("department_id", 2)
-      .field("role_id", 10);
+      .field("baseSalary", 5000000)
+      .field("departmentId", 2)
+      .field("roleId", 10);
 
-    expect(response.status).toBe(400);
-    expect(response.body).toEqual(expect.any(Object));
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual(expect.any(Object));
 
-    expect(response.body).toHaveProperty(
-      "message",
-      "image profile is required"
-    );
+    expect(res.body).toHaveProperty("message", "image profile is required");
   });
 
   test("POST /api/v1/web/employees - 400 - Employee - UPLOAD_ERROR", async () => {
@@ -215,24 +205,24 @@ describe("POST /api/v1/web/employees", () => {
       .spyOn(cloudinary.uploader, "upload")
       .mockImplementationOnce(() => Promise.reject({ name: "UPLOAD_ERROR" }));
 
-    const response = await request(app)
+    const res = await request(app)
       .post("/api/v1/web/employees")
-      .field("first_name", "janu")
-      .field("last_name", "hakim")
+      .field("firstName", "janu")
+      .field("lastName", "hakim")
       .field("nik", "02546589845645623")
       .field("education", "sma")
-      .attach("img_profile", "./__test__/test3.png")
+      .attach("imgProfile", "./__test__/test3.png")
       .field("birth_date", "1997-01-25")
       .field("email", "admin1@gmail.com")
       .field("password", "123456")
-      .field("base_salary", 5000000)
-      .field("department_id", 2)
-      .field("role_id", 10);
+      .field("baseSalary", 5000000)
+      .field("departmentId", 2)
+      .field("roleId", 10);
 
-    expect(response.status).toBe(400);
-    expect(response.body).toEqual(expect.any(Object));
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual(expect.any(Object));
 
-    expect(response.body).toHaveProperty("message", "upload error");
+    expect(res.body).toHaveProperty("message", "upload error");
   });
 
   test("POST /api/v1/web/employees - 400 - Employee - SequelizeUniqueConstraintError", async () => {
@@ -242,24 +232,24 @@ describe("POST /api/v1/web/employees", () => {
         Promise.resolve({ secure_url: "image.jpg" })
       );
 
-    const response = await request(app)
+    const res = await request(app)
       .post("/api/v1/web/employees")
-      .field("first_name", "janu")
-      .field("last_name", "hakim")
+      .field("firstName", "janu")
+      .field("lastName", "hakim")
       .field("nik", "02546589845645623")
       .field("education", "sma")
-      .attach("img_profile", "./__test__/test3.png")
-      .field("birth_date", "1997-01-25")
+      .attach("imgProfile", "./__test__/test3.png")
+      .field("birthDate", "1997-01-25")
       .field("email", "spettman1@telegraph.co.uk")
       .field("password", "g4j9YM")
-      .field("base_salary", 5000000)
-      .field("department_id", 2)
-      .field("role_id", 10);
+      .field("baseSalary", 5000000)
+      .field("departmentId", 2)
+      .field("roleId", 10);
 
-    expect(response.status).toBe(400);
-    expect(response.body).toEqual(expect.any(Object));
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual(expect.any(Object));
 
-    expect(response.body).toHaveProperty("message", "email must be unique");
+    expect(res.body).toHaveProperty("message", "email must be unique");
   });
 
   test("POST /api/v1/web/employees - 400 - Employee - MIMETYPE_NOT_SUPPORT", async () => {
@@ -269,27 +259,24 @@ describe("POST /api/v1/web/employees", () => {
         Promise.resolve({ secure_url: "image.jpg" })
       );
 
-    const response = await request(app)
+    const res = await request(app)
       .post("/api/v1/web/employees")
-      .field("first_name", "janu")
-      .field("last_name", "hakim")
+      .field("firstName", "janu")
+      .field("lastName", "hakim")
       .field("nik", "02546589845645623")
       .field("education", "sma")
-      .attach("img_profile", "./__test__/test.pdf")
+      .attach("imgProfile", "./__test__/test.pdf")
       .field("birth_date", "1997-01-25")
       .field("email", "mdemichele4@facebook.com")
       .field("password", "ZEaZOT9SBm3U")
-      .field("base_salary", 5000000)
-      .field("department_id", 2)
-      .field("role_id", 10);
+      .field("baseSalary", 5000000)
+      .field("departmentId", 2)
+      .field("roleId", 10);
 
-    expect(response.status).toBe(400);
-    expect(response.body).toEqual(expect.any(Object));
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual(expect.any(Object));
 
-    expect(response.body).toHaveProperty(
-      "message",
-      "image profile is required"
-    );
+    expect(res.body).toHaveProperty("message", "image profile is required");
   });
 });
 
@@ -298,45 +285,45 @@ describe("PUT /api/v1/web/employees/:id", () => {
     jest
       .spyOn(Cloudinary, "upload")
       .mockResolvedValue({ secure_url: "image.jpg" });
-    const response = await request(app)
+    const res = await request(app)
       .put("/api/v1/web/employees/1")
-      .field("first_name", "ghzy")
-      .field("last_name", "muklis")
+      .field("firstName", "ghzy")
+      .field("lastName", "muklis")
       .field("nik", "02546589845645623")
       .field("education", "sma")
-      .attach("img_profile", "./__test__/test3.png")
+      .attach("imgProfile", "./__test__/test3.png")
       .field("birth_date", "1997-01-25")
       .field("email", "admin23@gmail.com")
-      .field("base_salary", 5000000)
-      .field("department_id", 2)
-      .field("role_id", 10);
+      .field("baseSalary", 5000000)
+      .field("departmentId", 2)
+      .field("roleId", 10);
 
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual(expect.any(Object));
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual(expect.any(Object));
 
-    expect(response.body).toHaveProperty(
+    expect(res.body).toHaveProperty(
       "message",
       "Employee with email admin23@gmail.com updated successfully"
     );
   });
 
   test("PUT /api/v1/web/employees/:id - 200 - Update Employee - Success", async () => {
-    const response = await request(app)
+    const res = await request(app)
       .put("/api/v1/web/employees/1")
-      .field("first_name", "ghzy")
-      .field("last_name", "muklis")
+      .field("firstName", "ghzy")
+      .field("lastName", "muklis")
       .field("nik", "02546589845645623")
       .field("education", "sma")
       .field("birth_date", "1997-01-25")
       .field("email", "admin80@gmail.com")
-      .field("base_salary", 5000000)
-      .field("department_id", 2)
-      .field("role_id", 10);
+      .field("baseSalary", 5000000)
+      .field("departmentId", 2)
+      .field("roleId", 10);
 
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual(expect.any(Object));
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual(expect.any(Object));
 
-    expect(response.body).toHaveProperty(
+    expect(res.body).toHaveProperty(
       "message",
       "Employee with email admin80@gmail.com updated successfully"
     );
@@ -346,46 +333,46 @@ describe("PUT /api/v1/web/employees/:id", () => {
     jest
       .spyOn(Cloudinary, "upload")
       .mockResolvedValue({ secure_url: "image.jpg" });
-    const response = await request(app)
+    const res = await request(app)
       .put("/api/v1/web/employees/300")
-      .field("first_name", "ghzy")
-      .field("last_name", "muklis")
+      .field("firstName", "ghzy")
+      .field("lastName", "muklis")
       .field("nik", "02546589845645623")
       .field("education", "sma")
-      .attach("img_profile", "./__test__/test3.png")
+      .attach("imgProfile", "./__test__/test3.png")
       .field("birth_date", "1997-01-25")
       .field("email", "admin23@gmail.com")
-      .field("base_salary", 5000000)
-      .field("department_id", 2)
-      .field("role_id", 10);
+      .field("baseSalary", 5000000)
+      .field("departmentId", 2)
+      .field("roleId", 10);
 
-    expect(response.status).toBe(404);
-    expect(response.body).toEqual(expect.any(Object));
+    expect(res.status).toBe(404);
+    expect(res.body).toEqual(expect.any(Object));
 
-    expect(response.body).toHaveProperty("message", "no data found");
+    expect(res.body).toHaveProperty("message", "no data found");
   });
 });
 
 describe("DELETE /api/v1/web/employees/:id", () => {
   test("DELETE /api/v1/web/emplyees/2 - 200 - OK", async () => {
-    const response = await request(app).delete("/api/v1/web/employees/2");
+    const res = await request(app).delete("/api/v1/web/employees/2");
 
-    expect(response.status).toBe(200);
-    expect(response.body).toBeInstanceOf(Object);
+    expect(res.status).toBe(200);
+    expect(res.body).toBeInstanceOf(Object);
 
-    expect(response.body).toHaveProperty(
+    expect(res.body).toHaveProperty(
       "message",
       "Employee with email spettman1@telegraph.co.uk deleted successfully"
     );
   });
 
   test("DELETE /api/v1/web/emplyees/1000 - 404 - NOT_FOUND", async () => {
-    const response = await request(app).delete("/api/v1/web/employees/1000");
+    const res = await request(app).delete("/api/v1/web/employees/1000");
 
-    expect(response.status).toBe(404);
-    expect(response.body).toBeInstanceOf(Object);
+    expect(res.status).toBe(404);
+    expect(res.body).toBeInstanceOf(Object);
 
-    expect(response.body).toHaveProperty("code", 404);
-    expect(response.body).toHaveProperty("message", "no data found");
+    expect(res.body).toHaveProperty("code", 404);
+    expect(res.body).toHaveProperty("message", "no data found");
   });
 });

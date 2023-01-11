@@ -20,7 +20,7 @@ const getProfileEmployee = async (req, res, next) => {
     };
 
     const employee = await Employee.findOne(option);
-    if (!employee) throw { name: "NO_DATA_FOUND" };
+    // if (!employee) throw { name: "NO_DATA_FOUND" };
 
     res.status(200).json(employee);
   } catch (err) {
