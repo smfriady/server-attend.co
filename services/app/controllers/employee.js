@@ -2,7 +2,6 @@ const { Employee, Department, Role } = require("../models/index");
 const DatauriParser = require("datauri/parser");
 const Cloudinary = require("../helpers/cloudinary");
 const { Op } = require("sequelize");
-const e = require("express");
 
 const getEmployees = async (req, res, next) => {
   try {
@@ -10,13 +9,7 @@ const getEmployees = async (req, res, next) => {
 
     const option = {
       attributes: {
-        exclude: [
-          "password",
-          "createdAt",
-          "updatedAt",
-          "departmentId",
-          "roleId",
-        ],
+        exclude: ["password", "createdAt", "updatedAt", "departmentId", "roleId"],
       },
       limit,
       include: [
@@ -57,9 +50,7 @@ const getEmployees = async (req, res, next) => {
 
     const employees = await Employee.findAndCountAll(option);
 
-    res
-      .status(200)
-      .json({ total: employees.count, employees: employees.rows, page: +page });
+    res.status(200).json({ total: employees.count, employees: employees.rows, page: +page });
   } catch (err) {
     next(err);
   }
