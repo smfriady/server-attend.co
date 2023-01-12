@@ -7,8 +7,8 @@ const request = require("supertest");
 
 describe("POST /api/v1/web/auth", () => {
   const input = {
-    email: "mdemichele4@facebook.com",
-    password: "ZEaZOT9SBm3U",
+    email: "adedenham0@va.gov",
+    password: "CgrvxyT",
   };
 
   test("POST /api/v1/web/auth/login - 200 - OK", async () => {

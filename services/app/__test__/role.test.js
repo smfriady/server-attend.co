@@ -32,6 +32,5 @@ describe("GET /api/v1/web/roles", () => {
     const response = await request(app).get("/api/v1/web/roles");
 
     expect(response.status).toBe(500);
-    // expect(response.body.name).toBe("Error bos"); // harus di handle balikan message errornya
   });
 });

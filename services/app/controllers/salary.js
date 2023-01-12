@@ -18,7 +18,7 @@ const getSalaries = async (req, res, next) => {
   }
 };
 
-const getSalariesWeb = async (req, res, next) => {
+const getSalariesWeb = async (_req, res, next) => {
   try {
     const { page = "", limit = 10, firstName = "" } = req.query;
 

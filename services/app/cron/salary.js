@@ -24,7 +24,7 @@ const generateSalary = async () => {
         },
       });
       attendances.forEach((el) => {
-        // console.log(el.checkInTime);
+
         let checkin = dayjs(el.checkInTime);
         let checkout = dayjs(el.checkOutTime);
         hour += checkout.diff(checkin, "hour");
@@ -64,7 +64,7 @@ const generateSalary = async () => {
 
     const Salaries = await Salary.bulkCreate(salaries);
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 };
 

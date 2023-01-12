@@ -5,11 +5,9 @@ if (process.env.NODE_ENV !== "production") {
 const app = require("../app");
 const request = require("supertest");
 const { signJwt } = require("../helpers/jwt");
-// const token =
-//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiaWF0IjoxNjczMzU5MTUyLCJleHAiOjE2NzM0NDU1NTJ9.YUJssWXhOtemSwoEbKezhIfCbSuQD3xar-ueP6JzWp0";
+const token = signJwt({ id: 16 }, process.env.JWT_SECRET_EMPLOYEE);
 
 describe("GET /api/v1/mobile/employees", () => {
-  const token = signJwt({ id: 12 }, process.env.JWT_SECRET_EMPLOYEE);
   test("GET /api/v1/mobile/employees - 200 - Success", async () => {
     const res = await request(app)
       .get("/api/v1/mobile/employees")
@@ -17,7 +15,6 @@ describe("GET /api/v1/mobile/employees", () => {
 
     expect(res.status).toBe(200);
     expect(res.body).toBeInstanceOf(Object);
-
     expect(res.body).toHaveProperty("id", expect.any(Number));
     expect(res.body).toHaveProperty("firstName", expect.any(String));
     expect(res.body).toHaveProperty("lastName", expect.any(String));
@@ -29,7 +26,6 @@ describe("GET /api/v1/mobile/employees", () => {
     expect(res.body).toHaveProperty("baseSalary", expect.any(Number));
     expect(res.body).toHaveProperty("departmentId", expect.any(Number));
     expect(res.body).toHaveProperty("roleId", expect.any(Number));
-    // belum handle departmen & role
   });
 
   test("GET /api/v1/mobile/employees - 500 - internal server error", async () => {
